@@ -2,6 +2,13 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42842) 
 
+# Approach
+1. x가 y보다 큰 약수를 구한다.
+2. 약수 중 x,y의 곱이 yellow의 격자의 개수를 만족할 수 있는 경우의 수를 찾는다.
+# Implement
+1. 큰 수부터 체크하고 Math.sqrt를 사용하여 약수를 구한다. 
+2. yellow의 개수를 만족하는 경우의 수는 (x-2) * (y-2)이므로 해당 공식을 만족하는 yellow를 찾는다.
+
 ### 성능 요약
 
 메모리: 77.9 MB, 시간: 0.04 ms
