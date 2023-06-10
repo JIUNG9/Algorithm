@@ -2,6 +2,12 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/87946) 
 
+# Approach
+던전의 개수가 8개이므로 완전탐색으로 풀 방법을 고안한다.
+
+# Implement
+DFS로 문제를 해결한다.
+
 ### 성능 요약
 
 메모리: 76 MB, 시간: 0.04 ms
