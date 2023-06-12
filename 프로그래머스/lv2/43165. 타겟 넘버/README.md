@@ -2,11 +2,11 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/43165) 
 
-#Approach
+# Approach
 주어진 숫자가 2개이상 20개 이하이므로 완전탐색으로 접근을 한다.
 DFS로 해당 문제를 접근한다.
 
-#Implementation
+# Implementation
 해당 문제는 예시로 4,1,2,1가 있다고 가정하면 모든 수는 동시에 음수로서 계산될 수 있다. 따라서 하나의 가지치기에 4,-4 / 2, -2 / 1,-1/ 1,-1 이 존재할 수 있다.
 따라서 해당 문제해결을 DFS를 통해 마지막 depth에서 target값과 같다면 ans을 증가시켜 값을 구한다.
 
