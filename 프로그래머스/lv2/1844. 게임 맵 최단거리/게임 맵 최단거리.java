@@ -2,30 +2,32 @@ import java.util.*;
 
 class Solution {
     
-    int[] dx = {1, 0, -1, 0};
-    int[] dy = {0, 1, 0, -1};
+    static int xLen;
+    static int yLen;
+    static int[][] visited;
+    static int dx[] ={1,0,-1,0};
+    static int dy[] ={0,1,0,-1};
     
     public int solution(int[][] maps) {
-        int answer = 0;
-        
-        int[][] visited = new int[maps.length][maps[0].length];
-        
-        bfs(maps, visited);
-        answer = visited[maps.length-1][maps[0].length-1];
-        
-        if(answer == 0){
-            answer = -1;
+     //visited
+        xLen = maps.length;
+        yLen = maps[0].length;
+        visited = new int[xLen][yLen];
+        bfs(maps,visited);
+        int ans = visited[xLen-1][yLen-1];
+        if(ans == 0){
+            return -1;
         }
+        return ans;
         
-        return answer;
     }
     
     public void bfs(int[][] maps, int[][] visited){
         int x = 0;
         int y = 0;
-        visited[x][y] = 1;
         Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{x, y});
+        queue.add(new int[]{x,y});
+        visited[x][y] = 1;
         
         while(!queue.isEmpty()){
             int[] current = queue.remove();
@@ -36,17 +38,17 @@ class Solution {
                 int nX = cX + dx[i];
                 int nY = cY + dy[i];
                 
-                if(nX < 0 || nX > maps.length-1 || nY < 0 || nY > maps[0].length-1)
-                    continue;
+                if(nX < 0 || nY < 0 || nX > maps.length-1 || nY > maps[0].length-1 ) continue;
                 
                 if(visited[nX][nY] == 0 && maps[nX][nY] == 1){
                     visited[nX][nY] = visited[cX][cY] + 1;
-                    queue.add(new int[]{nX, nY});
+                    queue.add(new int[]{nX,nY});
                 }
             }
             
         }
         
+    
         
     }
 }
