@@ -1,3 +1,4 @@
+
 class Solution {
     public int solution(int n, int[][] computers) {
         int answer = 0;
@@ -13,7 +14,7 @@ class Solution {
     void dfs(int[][] computers, boolean[] chk, int start) {
         for(int i = 0; i < computers.length; i++) {
             if(computers[start][i] == 1 && !chk[i]) {
-                        chk[start] = true;
+                chk[start] = true;
                 dfs(computers, chk, i);
             }
         }
