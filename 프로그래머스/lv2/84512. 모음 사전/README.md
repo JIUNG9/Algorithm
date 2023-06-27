@@ -2,6 +2,12 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/84512) 
 
+# Approach
+Arrays.sort로 String배열을 정렬한다면 lexicographically하게 정렬된다. 따라서 n+1번쨰의 인덱스의 prefix가 n번째의 인덱스로 시작한다면 false를 반환한다.
+
+만약 n+1번째의 인덱스가 n번쨰의 prefix로 존재하지 않고 n이 n+2의 prefix로 존재할 수 있다면 모든 문자열을 선회해야한다.
+하지만 n번째의 인덱스가 n+1의 prefix로 존재하지 않고 n+2의 prefix의 경우가 될 수 있는 경우의 수는 없으므로 n+1과 n번째의 인덱스만 비교하면 된다.
+
 ### 성능 요약
 
 메모리: 82.4 MB, 시간: 18.99 ms
