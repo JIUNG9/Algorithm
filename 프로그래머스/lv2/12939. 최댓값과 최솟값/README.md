@@ -2,6 +2,9 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12939) 
 
+
+### Approach
+공백을 기준으로 String array를 생성하고 해당 array를 stream으로 Integer List로 변환 이후 sorted로 오름차순 정렬을 하고 첫 인덱스와 마지막 인덱스를 concatenation하여 정답을 리턴한다.
 ### 성능 요약
 
 메모리: 80.5 MB, 시간: 10.11 ms
