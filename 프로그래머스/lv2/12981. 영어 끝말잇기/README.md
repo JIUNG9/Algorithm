@@ -1,7 +1,8 @@
 # [level 2] 영어 끝말잇기 - 12981 
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12981) 
-
+### Approach
+'이전에 등장했던 단어는 사용할 수 없다' 라는 조건에서 상태를 저장하여 확인한다는 것을  체크한 이후 HashMap으로 Key, Value pair로 확인 리턴 Value는 틀린 사람의 identifier와 그리고 몇 번의 iteration에서 틀렸는지를 반환 따라서 각각 나머지 연산자와 나누기를 통해 해당 값을 얻어내고 iteration을 진행 
 ### 성능 요약
 
 메모리: 75.6 MB, 시간: 0.07 ms
