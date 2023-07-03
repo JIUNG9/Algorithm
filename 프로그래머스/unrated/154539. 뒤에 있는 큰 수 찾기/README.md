@@ -2,6 +2,9 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/154539) 
 
+
+### Approach
+검사하는 해당 배열의 인덱스의 value보다 크지만 가장 가까운 인덱스의 value를 찾아아하므로 Stack을 사용한다. 만약 비교하는 숫자가 스택에 있는 숫자보다 작다면 해당 스택에 있는 숫자를 pop()하고 리턴을 할 배열에 값을 넣어준다. 모든 값을 순회하면서 push를 진행하고 Stack으로 가장 가까우면서 큰 값을 찾는다. while(!stack.Empty() && stk.peek() > arr[]) 해당 pseudo 코드를 통해 스택에 있는 모든 원소를 검사할 수 있다.
 ### 성능 요약
 
 메모리: 189 MB, 시간: 92.02 ms
