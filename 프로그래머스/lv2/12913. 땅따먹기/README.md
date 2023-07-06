@@ -2,6 +2,13 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12913) 
 
+
+### Approach
+입력 값이 100,000이므로 DFS로 접근하는 것은 시간 복잡도를 초과한다. 따라서 DP로 해당 문제를 접근했다. DP의 배열의 index와 동일하지 않은 입력값의 배열의 index의 최대값을 구하여 DP의 배열을 업데이트한다. 최종적으로 마지막 행에 가장 큰 값을 지닌 DP의 배열의 원소가 정답이 된다.
+
+### 실수한 점
+DP의 index를 갱신할 때 같은 입력 배열의 index를 고려해서는 안 된다. 따라서 for loop의 조건문에 해당 조건을 추가했지만 해당 코드는 inner loop의 iteration 자체를 종료시켰다. 따라서 해당 코드를 제거하고 for loop 안에 조건을 추가하여 문제를 해결하였다.
+
 ### 성능 요약
 
 메모리: 85.8 MB, 시간: 23.20 ms
