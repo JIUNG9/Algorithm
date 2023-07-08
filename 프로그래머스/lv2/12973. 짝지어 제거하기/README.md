@@ -2,6 +2,9 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12973) 
 
+### Approach
+짝지어서 짝이 맞는지 확인하는 문제이므로 Stack을 활용해서 접근했다. 만약 짝이 맞는다면 pop 아니라면 push를 진행하고 순회가 끝났을 때 stack에 element가 남아있다는 건 짝이 맞지 않는다는 의미이므로 false를 반환한다.
+
 ### 성능 요약
 
 메모리: 59 MB, 시간: 46.96 ms
