@@ -2,6 +2,9 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12941) 
 
+### Approach
+가장 큰 값과 가장 작은 값을 곱하는 것이 최솟값을 구하는 방식이므로 정렬을 한 이후 게산을 한다.
+
 ### 성능 요약
 
 메모리: 52 MB, 시간: 2.44 ms
