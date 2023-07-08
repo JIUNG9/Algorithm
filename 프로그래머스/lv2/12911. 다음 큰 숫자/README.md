@@ -2,6 +2,12 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12911) 
 
+### Approach
+이진 수로 변환하여 1의 개수가 동일하면서 크기가 가장 작은 수는 입력값보다 큰 숫자를 선회하면서 1의 개수를 구하면된다.
+
+### 효율성
+2진수를 변환할 때 method를 작성해서 method call을 진행했었는데 이 때문에 효율성 문제가 생겨서 Integer의 toBinaryString을 사용하였다.
+
 ### 성능 요약
 
 메모리: 51.9 MB, 시간: 0.04 ms
