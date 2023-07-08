@@ -2,6 +2,40 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12909) 
 
+### Approach 
+짝이 맞아야하는 문제이므로 스택으로 접근했다. 하지만 효율성의 검사에서 실패하였다. 효율성의 실패한 코드는 이러하다
+```
+   for(int i = 1; i < s.length(); i++){
+        if(!stk.isEmpty() && stk.peek()== '(' && s.charAt(i) == ')'){
+        stk.pop();
+      }
+       else{
+         stk.push(s.charAt(i));
+      }
+    }
+    if(!stk.isEmpty()) return false;
+    return true;
+  }
+```
+해당 접근은 스택에 ( 가 존재한다면 )를 팝하는 조건이다. 그렇지 않다면 push를 통해서 진행한다.
+아래는 효율성을 통과한 코드이다
+
+```
+  for(int i = 0; i < s.length(); i++){
+      
+        if(s.charAt(i) == '('){
+            stk.push('(');
+        }
+      else{
+          if(stk.isEmpty()) return false;
+          stk.pop();
+      }
+        
+     
+    }
+```
+stack을 peek하지 않고 '(' 일 경우 푸쉬를 한다. 그리고 else statement와 조건을 통해 stk이 비어있을 경우 짝이 맞지 않는다는 의미로 false를 반환한다.
+
 ### 성능 요약
 
 메모리: 53.4 MB, 시간: 15.82 ms
