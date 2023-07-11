@@ -2,6 +2,10 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12914) 
 
+### Approach
+처음 문제를 접근했을 때 조합을 생각하여 Factorial을 BigInteger의 배열에 저장하여 n! / (n-r)! / r!를 계산하며 답을 얻으려고 하였지만 실패하였다. 해당 문제는 4칸을 가려고 할 때 3칸을 간 것과 2칸을 간 경우의 수를 더하면 되는 규칙이 있으므로 해당 규칙을 활용하여 DP를 구현하여 문제를 해결할 수 있다. 따라서 memo[i] = memo[i-1] + memo[i-2]를 활용하여 문제를 해결하였다.
+
+
 ### 성능 요약
 
 메모리: 72.7 MB, 시간: 0.11 ms
