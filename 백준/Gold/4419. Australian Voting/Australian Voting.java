@@ -7,6 +7,8 @@ public class Main {
 
   private static final int MAX_CANDIDATES = 20;
   private static final int MAX_VOTERS = 1000;
+  private static final int MAX_CANDIDATE_NAME_LENGTH = 80;
+
 
   private static final Map<String, Integer> candidateVotes = new HashMap<>();
   private static int numCandidates;
@@ -20,14 +22,14 @@ public class Main {
 
     numCandidates = Integer.parseInt(reader.readLine());
     if (numCandidates > MAX_CANDIDATES) {
-      throw new IOException(
+      throw new IllegalArgumentException(
           "후보자 수가 " + MAX_CANDIDATES + "명보다 많습니다. " + MAX_CANDIDATES + "명 이하로 입력하세요");
     }
 
     for (int i = 0; i < numCandidates; i++) {
       String name = reader.readLine();
       if (name.length() > 80) {
-        throw new IOException("후보자 이름이 80글자 이하로 작성하시오");
+        throw new IllegalArgumentException("후보자 이름은 최대 " + MAX_CANDIDATE_NAME_LENGTH + "글자까지 가능합니다.");
       }
       candidateVotes.put(name, 0);
       candidateNames.add(name);
@@ -36,7 +38,7 @@ public class Main {
     while ((input = reader.readLine()) != null && input.length() > 0) {
       StringTokenizer tokenizer = new StringTokenizer(input);
       if (voterCount >= MAX_VOTERS) {
-        throw new IOException("최대 투표 가능 인원수는 " + MAX_VOTERS + "명입니다.");
+        throw new IllegalArgumentException("최대 투표 가능 인원수는 " + MAX_VOTERS + "명입니다.");
       }
       for (int i = 0; i < numCandidates; i++) {
         votes[voterCount][i] = Integer.parseInt(tokenizer.nextToken());
