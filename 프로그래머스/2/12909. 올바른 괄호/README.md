@@ -12,9 +12,7 @@
 2. Save the all elements from rear into Stack A
 3. For start if Stack B is empty. push from Stack A
 4. iterate. while a is not Empty. peek from B. and If the elemnts is '(' which is peeked from Stack B and the element is ')' from A. Pop both of elements from two Stack A and B else push element into Stack B from Stack A
-   
-5.1 If A stack is empty and B is not return false
-5.2 If A stack is empty and B is empty return true
+5. If A stack is empty and B is not return false, If A stack is empty and B is empty return true
 
 
 
