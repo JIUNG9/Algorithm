@@ -1,64 +1,49 @@
-import java.util.LinkedList;
-import java.util.Queue;
-
+import java.util.*;
 class Solution {
-    
-  private final int[][] direction = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
-  private boolean[][] visited;
-  private int width;
-  private int length;
-    
-    
-  
+    private int answer = -1;
   public int solution(int[][] maps) {
-    width = maps.length;
-    length = maps[0].length;
+    Queue<int[]> q = new LinkedList<>();
 
-    visited = new boolean[width][length];
 
-    //init the visited array
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < length; j++) {
-        visited[i][j] = false;
+    int mapLength = maps.length;;
+    int mapWidth = maps[0].length;
+    boolean[][] visited = new boolean[mapLength][mapWidth];
+    q.add(new int[]{0,0,1});
+    visited[0][0]= true;
+
+    while(!q.isEmpty()){
+      int[] polled =q.poll();
+      int x = polled[0];
+      int y = polled[1];
+      int counter = polled[2];
+      if(x == mapWidth-1 && y == mapLength-1){
+        answer = Math.max(counter,answer);
+      }
+      if(canGo(maps,y+1,x,mapLength,mapWidth,visited)){
+        q.add(new int[]{x,y+1,counter+1});
+      }
+      if(canGo(maps,y,x+1,mapLength,mapWidth,visited)){
+        q.add(new int[]{x+1,y,counter+1});
+      }
+      if(canGo(maps,y-1,x,mapLength,mapWidth,visited)){
+        q.add(new int[]{x,y-1,counter+1});
+      }
+      if(canGo(maps,y,x-1,mapLength,mapWidth,visited)){
+        q.add(new int[]{x-1,y,counter+1});
       }
     }
-    //make the queue and init the position and counter
-    Queue<int[]> q = new LinkedList<>();
-    //current position
-    q.offer(new int[]{0, 0, 1});
-    return bfs(maps, q);
-
+    return answer;
   }
 
 
-  public int bfs(int[][] maps, Queue<int[]> q) {
-    //** no matter compare the answer. because use the queue. the shortest path is reached to the target
-    //1. if x and y is reached at target position return the counter
-    //iteration => check every direction by using for loop
-    //* if not visited added in the queue
-
-    while (!q.isEmpty()) {
-      int[] xAndYCurrentCounter = q.poll();
-      int currentX = xAndYCurrentCounter[0];
-      int currentY = xAndYCurrentCounter[1];
-      int counter = xAndYCurrentCounter[2];
-
-      if (currentX == width - 1 && currentY == length - 1) {
-        return counter;
-      }
-      for (int[] location : direction) {
-        int furtherX = location[0] + currentX;
-        int furtherY = location[1] + currentY;
-
-      if(furtherX >= width || furtherX < 0 || furtherY >= length || furtherY < 0 ) continue;
-
-     if (maps[furtherX][furtherY] == 1) {
-          maps[furtherX][furtherY] = 0;
-          q.offer(new int[]{furtherX, furtherY, counter + 1});
-        }
-      }
+  public boolean canGo(int[][] maps, int len, int width, int mapLen, int mapWidth,
+      boolean[][] visited) {
+    if(len < mapLen && width < mapWidth && len >= 0 && width >= 0 && maps[len][width] != 0 && !visited[len][width])
+    {
+      visited[len][width] = true;
+      return true;
     }
-    return -1;
+    return false;
   }
 
 }
