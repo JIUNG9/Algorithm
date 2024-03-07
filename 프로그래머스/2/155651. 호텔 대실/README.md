@@ -9,8 +9,7 @@
 - Use the Priority Queue for sorting when adding from the arr. the comparison between String will be sorted by alphabetical order. 
 
 
-<p><img src="https://user-images.githubusercontent.com/62426665/199907266-561e3b75-84eb-4da1-930c-a6ac8fa82a79.png" title="" alt="example1"><br>
-위 사진과 같습니다.</p>
+<p><img src="https://user-images.githubusercontent.com/62426665/199907266-561e3b75-84eb-4da1-930c-a6ac8fa82a79.png" title="" alt="example1"><br></p>
 
 
 
