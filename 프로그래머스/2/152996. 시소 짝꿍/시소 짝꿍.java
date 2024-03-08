@@ -1,23 +1,37 @@
-import java.util.*;
-
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 class Solution {
-    public long solution(int[] weights) {
-        long answer = 0;
-        Arrays.sort(weights);
-        HashMap<Double,Integer> map = new HashMap<>();
+    public Long solution(int[] weights) {
+        Long answer = 0L;
+        Map<Long, Long> torqueMap = new HashMap<>();
+        Map<Long, Long> weightCount = new HashMap<>(); // 각 무게의 등장 횟수를 추적
 
-        for(Integer weight:weights){
-            double w = Double.valueOf(weight);
-            if(map.containsKey(w)){
-                answer+=map.get(w);
+        for (long weight : weights) {
+            // 무게의 등장 횟수를 업데이트
+            weightCount.put(weight, weightCount.getOrDefault(weight, 0L) + 1);
+            Long[] torques = {weight * 2, weight * 3, weight * 4};
+                for (Long torque : torques) {
+                    torqueMap.put(torque, torqueMap.getOrDefault(torque, 0L) + 1);
+                }
+        }
+
+        // 토크값에 따른 짝꿍의 수를 계산합니다.
+        for (Long count : torqueMap.values()) {
+            if (count > 1) {
+                answer += (Long) count * (count - 1) / 2;
             }
-            map.put(w,map.getOrDefault(w,0)+1);
-            map.put(w*4/3,map.getOrDefault(w*4/3,0)+1);
-            map.put(w*1.5,map.getOrDefault(w*1.5,0)+1);
-            map.put(w*2,map.getOrDefault(w*2,0)+1);
         }
 
 
-        return answer;
+        // 중복으로 들어간 값들 계산
+        Long minus = 0L;
+        for (Long count : weightCount.values()) {
+            if(count > 1){
+                minus+= ((Long) count * (count - 1) / 2)*2;
+            }
+        }
+
+        return answer - minus;
     }
 }
