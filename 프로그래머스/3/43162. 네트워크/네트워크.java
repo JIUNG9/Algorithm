@@ -1,58 +1,88 @@
-import java.util.*;
-
 class Solution {
+
     private boolean[][] visited;
-  
-  public int solution(int n, int[][] computers) {
-    int counter = 0;
-    visited = new boolean[n][n];
-    initVisited(n, computers);
-
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < n; j++) {
-        if (computers[i][j] == 1 && !visited[i][j]) {
-          counter++;
-          visited[i][j] = true;
-          visited[j][i] = true;
-          dfs(i, j, computers);
-          dfs(j, i, computers);
+    
+   //1번과 2번이 연결되어있을 때 2번과 연결된 모든 노드들도 연결되어있어 1개라고 표시하면서
+    //이미 방문한 것을 제외한 2번 3번 4번 n 번까지 반복하여 연결된 노드의 수를 구한다.
+    
+    
+    // 구현:
+    /*
+    1번을 먼저 시작하고 자기 자신을 제외한 것을 순회해야한다. 자기 자신은 항상 computers 1 처리가 되어있다.
+    방문을 하지 않은 것을 방문해야한다. 1과 2를 방문 했다는 것은 visited[i][j] [j][i] 동일하다 
+    
+    visited를 dfs에 파라미터로 하지 않는다. 스택 x
+    
+    
+    for(int i =0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            if(i==j) visited[i][j] = true;
         }
-      }
     }
-    return counter + countStandAlone(n);
-  }
-
-
-  public int countStandAlone(int n){
-    int counter = 0;
+    
     for(int i = 0; i < n; i++){
-      boolean flag = false;
-      for(int j = 0; j < n; j++){
-        if(i!=j && visited[i][j]){
-          flag = true;
+        for(int j = 0; j < n; j++){
+            if(c[i][j]==1 && !visited[i][j] && visited[j][i]) {
+            dfs(c,j,i);
+            counter++;
         }
-      }
-      if(!flag) counter++;
     }
-    return counter;
-  }
-  public void dfs(int node1, int node2, int[][] c) {
-    for (int i = 0; i < c.length; i++) {
-      if (c[node2][i] == 1) {
-        if (!visited[i][node1]) {
-          visited[i][node1] = true;
-          visited[node1][i] = true;
-          dfs(i, node1, c);
-          dfs(node2, i, c);
+    
+    //1과 2가 연결되어있다고 할 때 2와 연결된 모든 노드들을 1과 방문 처리
+    public void dfs(int[][] c, int node, int connectedNode){
+    
+    for(int i = 0; i < c.length; i++){
+        if(!visited[node][i] && !visited[i][node]){
+            visited[connectedNode][i] = true;
+            visited[i][connectedNode] = true;
+            dfs(c,node1,node2)
         }
-      }
     }
-
-  }
-
-  public void initVisited(int len, int[][] computer) {
-    for (int i = 0; i < len; i++) {
-      visited[i][i] = true;
+    
     }
-  }
+    
+    
+    
+    */
+    public int solution(int n, int[][] c) {
+        
+        visited = new boolean[n][n];
+        int counter = 0;
+        int standAloneCounter = 0;
+    for(int i =0; i < n; i++){
+        boolean standAloneFlag = true;
+        for(int j = 0; j < n; j++){
+            if(i==j) visited[i][j] = true;
+            else if(c[i][j] != 0){
+                standAloneFlag = false;
+            }
+        }
+        if(standAloneFlag) standAloneCounter++;
+    }
+    
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            if(c[i][j]==1 && !visited[i][j]) {
+                System.out.println("before start dfs");
+                System.out.println("i, j" + i + " "+ j);
+            dfs(c,j,i);
+            counter++;
+        }
+    }
+    }
+        
+        return counter + standAloneCounter;
+    }
+        
+    public void dfs(int[][] c , int node, int connectedNode){
+            for(int i = 0; i < c.length; i++){
+        if(!visited[node][i] && c[node][i] == 1){
+            visited[node][i] = true;
+            visited[i][node] = true;
+            visited[connectedNode][i] = true;
+            visited[i][connectedNode] = true;
+            dfs(c,i,connectedNode);
+        }
+    }
+    }
 }
