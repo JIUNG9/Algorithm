@@ -41,14 +41,11 @@ class Solution {
         if(theNumberOfO == 0 && theNumberOfX == 0) return 1;
         
 
-        if(isWon(b,'O')){
-
-
-            if(theNumberOfO <= theNumberOfX) {
-                return 0; 
-            }
+        if(isWon(b,"O")){
+            if(theNumberOfO <= theNumberOfX) return 0; 
+            
         } 
-        if(isWon(b,'X')){
+        if(isWon(b,"X")){
             if(theNumberOfO > theNumberOfX) return 0;
         } 
         
@@ -56,9 +53,7 @@ class Solution {
         //theNumberOfO - theNumberOfX != 1 || theNumberOfO - theNumberOfX !=0 -> 순서를 지키지 않았다 ->
         //O를 많이 둔 경우
         //X 를 많이 둔 경우
-        if(theNumberOfO - theNumberOfX > 1 || theNumberOfX > theNumberOfO){
-                                                                System.out.println("won the O");
-
+        if(theNumberOfO - theNumberOfX > 1 || theNumberOfX - theNumberOfO != 0){
             return 0;
         }
         
@@ -76,15 +71,15 @@ class Solution {
         
     }
     
-    public boolean isWon(String b[], char c){
+    public boolean isWon(String b[], String s){
         //세로, 가로, 대각선 
         
         
-            if(b[0].charAt(0) ==c && b[0].charAt(0)==(b[1].charAt(1)) && b[1].charAt(1)==(b[2].charAt(2)) ){
+            if(b[0].charAt(0)==(b[1].charAt(1)) && b[1].charAt(1)==(b[2].charAt(2))){
                 return true;
             }
         
-            if(b[0].charAt(2) == c && b[0].charAt(2)==(b[1].charAt(1))&& b[1].charAt(1)==(b[2].charAt(0))){
+            if(b[0].charAt(2)==(b[1].charAt(1)) && b[1].charAt(1)==(b[2].charAt(0))){
                 return true;
             }
         
@@ -92,7 +87,6 @@ class Solution {
             for(int i = 0; i < 3; i++){
                 boolean flag = true;
                 char  init = b[i].charAt(0);
-                if(init != c) continue;
                 for(int j = 0; j < 3; j++){
                     if(init != (b[i].charAt(j))){
                      flag = false;   
@@ -104,7 +98,6 @@ class Solution {
         for(int i = 0; i < 3; i++){
             boolean flag = true;
             char  init = b[i].charAt(i);
-            if(init != c) continue;
                 for(int j = 0; j < 3; j++){
                     if(init != b[j].charAt(i)){
                         flag =false;
