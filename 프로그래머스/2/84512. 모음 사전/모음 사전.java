@@ -1,30 +1,28 @@
-import java.util.*;
-
 class Solution {
-    
-    private List<String> list;
+    private int counter = 0;
     private int answer = 0;
-    
-public int solution(String w) {
-    list = new ArrayList<>();
-    dfs(w, "", 5, new char[]{'A', 'E', 'I', 'O', 'U'});
-    return answer;
-  }
-
-
-  public void dfs(String target, String current, int len, char[] vowels) {
-    if (target.equals(current)) {
-      answer = list.size();
+    private String[] vowel = {"A","E","I","O","U"};
+    public int solution(String word) {
+        
+        dfs(word, "",0);
+        return answer;
     }
+    public void dfs(String target, String current, int depth){
+        
+            if(target.equals(current)){
+                answer = counter;
+            }
+        
+        
+            for(String v : vowel)
+            {
+                if(current.length() < 5){
+                    counter++;
+                    // System.out.println("current+vowel: "+ current+v);
+                    dfs(target, current+v,depth+1);
+                }
 
-    if (current.length() != len) {
-      for (int i = 0; i < 5; i++) {
-        list.add(current + vowels[i]);
-        dfs(target, current + vowels[i], len, vowels);
-      }
-
-    }
-
-
-  }
+            }
+        
+}
 }
