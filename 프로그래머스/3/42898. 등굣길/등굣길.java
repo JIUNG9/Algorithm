@@ -1,48 +1,32 @@
-import java.util.*;
+//문제 : i가 1로 시작함으로서 0번째 length를 체크하지 못 하는 것이 문제 - >padding을 추가하는 것이 문제 풀이에 유리하다.
+
 class Solution {
     public int solution(int m, int n, int[][] puddles) {
-        
-        int[][] dp = new int[n+1][m+1];
-        boolean[][] isPuddle = new boolean[n+1][m+1];
-        
-        
-        for(int[] p : puddles){
-            isPuddle[p[1]][p[0]] = true;
-        }
-        
-        // for(int i = 1; i <= n; i++){
-        //     for(int j = 1; j <= m; j++){
-        //         System.out.println("boolean: "+ isPuddle[i][j]);
-        //     }
-        // }
-        
-        for(int i = 1; i <= n; i++){
-            if(isPuddle[i][1]) break;
-            dp[i][1] = 1;
-        }
-        
-        for(int j = 1; j <= m; j++){
-            if(isPuddle[1][j]) break;
-            dp[1][j] = 1;
-        }
-        
-        
-        for(int i = 1; i <=n; i++){
-            for(int j = 1; j <= m; j++){
-                if(i == 1 && j ==1) continue;
-                if(isPuddle[i][j]){
-                    dp[i][j] = 0;
-                } 
-                else{
-                    dp[i][j] = (dp[i-1][j] + dp[i][j-1]) %1000000007;
-            }
-                    // System.out.println("dp[" + i + "]" + "[" + j+"] : "+ dp[i][j]);
+        int[][] map= new int[n+1][m+1];
+        map[1][1] = 1; //starting point
+        map= puddle(map, puddles);
+        return dp(map, m, n);
+    }
 
+    public int[][] puddle(int[][] map, int[][] puddles){
+        for(int i=0; i<puddles.length;i++)
+            map[puddles[i][1]][puddles[i][0]]= -1;
+        return map;
+    }
+
+    public int dp(int[][] map, int m, int n){
+        for (int j=1; j<=n; j++){
+            for(int k=1; k<=m;k++){
+                if (j == 1 && k == 1)       //(1,1)은 1로 만들어두고, 0이 되지 않도록
+                    continue;
+                if (map[j][k] == -1){ //웅덩이는 0으로 만들어 다음 덧셈 때 영향끼치지 않게
+                     map[j][k] = 0;
+                    continue;
+                }         
+            map[j][k] = (map[j][k-1] + map[j-1][k]) %1000000007;
+                //[a,b] = [a-1,b] + [a,b-1] 공식
+            }
         }
-        }
-        return dp[n][m];
-        
-        
-        
+        return map[n][m]; // result
     }
 }
