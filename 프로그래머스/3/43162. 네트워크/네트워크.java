@@ -1,59 +1,43 @@
-import java.util.*;
 class Solution {
     private int answer = 0;
-    private boolean[][] visited;
+    private boolean[] visited;
     public int solution(int n, int[][] c) {
-        
         int len = c.length;
-        visited = new boolean[len][len];
-        
+        visited = new boolean[len];
         
         for(int i = 0; i < len; i++){
             for(int j = 0; j < len; j++){
-                if(i==j) continue;
-                if(!visited[i][j] && !visited[j][i]&& c[i][j] == 1 &&  c[j][i] == 1){
-                    visited[i][j] = true;
-                    visited[j][i] = true;
-                    dfs(c,j,i);
+                if(i!=j && !visited[i]){
+                    visited[i] = true;
+                    dfs(i,c);
                     answer++;
-                
+                }
             }
         }
-        }
-
-            return answer+getNotConnectedNodeCount(visited);
+        
+        return answer == 0 ? len : answer;
+        /*
+        for(i ; i < len; i++)
+        if(방문하지 않았고 연결되어있다면)
+        연속적으로 연결된 것을 확인(dfs)
+        연결된 것은 하나의 간선으로 간주하고 answer 값을 추가
+        */
+    }
     
+    public void dfs(int connectedIdx, int[][] c){
+        /*
+        for(i;i < len; i++)
+        if(currentIdx!= i && 방문하지 않았다면)
+        방문처리
+        dfs(connectedIdx, i)
+        */
+        for(int i = 0; i < c.length; i++){
+            if(connectedIdx!=i && c[connectedIdx][i] == 1 && !visited[i]){
+                visited[i] = true;
+                dfs(i,c);
+            }
+        }
     }
         
         
-            
-        
-
-    
-    public int getNotConnectedNodeCount(boolean[][] visited){
-        int counter = 0;
-        for(boolean[] boolArr: visited){
-            boolean flag = false;
-            for(boolean b: boolArr){
-                if(b) flag = true;
-            }
-            if(!flag) counter++;
-        }
-        return counter;
-    }
-    
-    
-    public void dfs(int[][] c, int targetNode, int originNode){
-        int len = c.length;
-        for(int i = 0; i < len; i++){
-            if(i==targetNode) continue;
-            if(c[targetNode][i] == 1 && c[i][targetNode] == 1 && !visited[targetNode][i] && !visited[i][targetNode]){
-                visited[i][targetNode] = true;
-                visited[targetNode][i] = true;
-                dfs(c,i,targetNode);
-            }
-            
-            }
-        }
-    
 }
