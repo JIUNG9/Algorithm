@@ -1,7 +1,17 @@
+
 -- 코드를 입력하세요
--- FP와 FO 테이블에서 생산일자가 2022년 5월인 식품들의 식품 ID, 식품 이름, 총 매출
-SELECT FP.PRODUCT_ID,FP.PRODUCT_NAME, SUM(FO.AMOUNT * FP.PRICE) AS TOTAL_SALES
-FROM FOOD_PRODUCT AS FP INNER JOIN FOOD_ORDER AS FO ON FP.PRODUCT_ID = FO.PRODUCT_ID
-WHERE DATE_FORMAT(FO.PRODUCE_DATE,"%Y-%m") LIKE "2022-05%"
-GROUP BY FO.PRODUCT_ID
-ORDER BY TOTAL_SALES DESC , FO.PRODUCT_ID ASC
+# 생산일자 2022년 5월 식품들의 식품id, 이름, 총매출
+# 총매출 내림차순, 식품id 오름차순
+
+# order table에서 id 당 mount를 집계해야함!
+with temp as (
+    select PRODUCT_ID, sum(AMOUNT) as AMOUNT
+    from FOOD_ORDER 
+    where year(PRODUCE_DATE) = 2022 and month(PRODUCE_DATE) = 5     
+    group by PRODUCT_ID
+)
+
+select T.PRODUCT_ID, P.PRODUCT_NAME , T.AMOUNT * P.PRICE as TOTAL_SALES
+from temp T
+inner join FOOD_PRODUCT P on T.PRODUCT_ID = P.PRODUCT_ID
+order by TOTAL_SALES desc, T.PRODUCT_ID asc;
