@@ -1,32 +1,29 @@
 import java.util.*;
 class Solution {
+   public static long solution(int n, int[] times) {
+        long a = 1;
+        long b = Integer.MAX_VALUE;
+        b *= 100000;
 
-   public long solution(int n, int[] times) {
-        int answer = 0;
-        long max = 0;
-        for(int i = 0; i < times.length; i++) {
-            if(times[i] > max) {
-                max = times[i];
+        long answer = 0;
+
+        while(a<=b){
+            long c = (a+b)/2;
+
+            long sum = 0; // 가능한 인원
+            for(int i=0; i<times.length; i++){
+                sum += c/times[i];
+            }
+
+            if(sum >= n){
+                answer = c;
+                b = c-1;
+            }else{
+                a = c+1;
             }
         }
-        long s = 1, e = max*n, mid;
-        long res = e;
-        while(s <= e) {
-            mid = (s+e)/2;
-            long total = 0;
-            for(int i = 0; i < times.length; i++) {
-                total += (mid / times[i]);
-            }
-            if(total < n) {
-                s = mid + 1;                
-            }
-            else {
-                if(res > mid) {
-                    res = mid;
-                }
-                e = mid-1;
-            }
-        }
-        return res;
+
+        return answer;
     }
+
 }
