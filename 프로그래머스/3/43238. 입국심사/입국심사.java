@@ -1,10 +1,10 @@
 import java.util.*;
+import java.util.*;
 class Solution {
    public static long solution(int n, int[] times) {
+       Arrays.sort(times);
         long a = 1;
-        long b = Integer.MAX_VALUE;
-        b *= 100000;
-
+        long b = (long)times[times.length-1] * (long) n;
         long answer = 0;
 
         while(a<=b){
