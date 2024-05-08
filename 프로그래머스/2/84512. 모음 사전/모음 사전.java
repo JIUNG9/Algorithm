@@ -1,28 +1,22 @@
 class Solution {
-    private int counter = 0;
+    private int counter =0;
     private int answer = 0;
-    private String[] vowel = {"A","E","I","O","U"};
     public int solution(String word) {
-        
-        dfs(word, "",0);
+        String[] arr = new String[]{"A","E","I","O","U"};
+        dfs(word,"",arr);
         return answer;
+        
     }
-    public void dfs(String target, String current, int depth){
-        
-            if(target.equals(current)){
-                answer = counter;
+    public void dfs(String target, String curr,  String[] arr){
+        for(int i = 0; i < arr.length; i++){
+            if(target.equals(curr+arr[i])){
+                answer = counter+1;
+                System.out.println(curr);
             }
-        
-        
-            for(String v : vowel)
-            {
-                if(current.length() < 5){
-                    counter++;
-                    // System.out.println("current+vowel: "+ current+v);
-                    dfs(target, current+v,depth+1);
-                }
-
+            if(curr.length() < arr.length){
+                counter++;
+                dfs(target,curr+arr[i],arr);
             }
-        
-}
+        }
+    }
 }
