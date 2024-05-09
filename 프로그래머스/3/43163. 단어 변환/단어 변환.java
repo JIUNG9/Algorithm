@@ -1,35 +1,37 @@
-import java.util.*;
-
 class Solution {
-    private int answer = Integer.MAX_VALUE;
-    public int solution(String begin, String target, String[] words) {
-        
-        boolean[] visited = new boolean[words.length];
-        dfs(words,visited, begin,target, 0);
-        return answer== Integer.MAX_VALUE ? 0 : answer;
+    private boolean[] visited;
+    private int answer = Integer.MAX_VALUE; 
+    
+    public int solution(String b, String t, String[] w) {
+        int len = w.length;
+        visited = new boolean[len];     
+        dfs(b,t,0,w);
+        return answer == Integer.MAX_VALUE ? 0 : answer;
         
     }
-    
-    public void dfs(String[] w,boolean[] visited, String pat, String tar, int counter){
-        // System.out.println("pat: "+ pat);
-        if(tar.equals(pat)) {
-            answer = Math.min(counter,answer);
+    public void dfs(String current, String target, int counter, String[] w){
+        
+        
+         if(current.equals(target)){
+                answer = Math.min(answer, counter);
         }
-        for(int i = 0; i < w.length; i++){
-            if(!visited[i] &&changedOnlyOneWord(pat,w[i])){
+        for(int i =0; i < w.length; i++){
+
+            if(!visited[i] && isDifferentOnlyOneWord(current,w[i])){
                 visited[i] = true;
-                dfs(w,visited, w[i], tar, counter+1);
+                dfs(w[i],target,counter+1,w);
                 visited[i] = false;
             }
         }
+        
+        
     }
-    
-    
-    public boolean changedOnlyOneWord(String input, String target){
-        int counter = 0;
-        for(int i = 0; i < input.length();i++){
-            if(input.charAt(i) != target.charAt(i)) counter++;
+    public boolean isDifferentOnlyOneWord(String s1, String s2){
+        int differentCounter = 0;
+        for(int i = 0; i < s1.length(); i++){
+            if(s1.charAt(i) != s2.charAt(i)) differentCounter++;
+            if(differentCounter >= 2) return false; 
         }
-        return counter==1;
+        return true;
     }
 }
