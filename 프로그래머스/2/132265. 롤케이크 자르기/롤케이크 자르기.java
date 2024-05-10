@@ -1,37 +1,27 @@
-import java.util.*;
-
-
+import java.util.Map;
+import java.util.HashMap;
 class Solution {
-public int solution(int[] t){
-    int len = t.length;
-    int answer =0;
-    Map<Integer,Integer> map = sliceTheCake(t);
-    Set<Integer> brotherHasToppingSet = new HashSet<>();
-    for(int i = 0; i < len; i++){
-      brotherHasToppingSet.add(t[i]);
-      int value = map.get(t[i]);
-      if(value -1 <=0) {
-        map.remove(t[i]);
-      }
-      else{
-        map.put(t[i],value-1);
-      }
-      if(brotherHasToppingSet.size()== map.size()){
-        answer++;
-      }
-      }
-      return answer;
+    public int solution(int[] t) {
+        int counter = 0;
+        Map<Integer,Integer> map1 = new HashMap<>();
+        Map<Integer,Integer> map2 = new HashMap<>();
+        
+        for(int i = 0; i < t.length; i++){
+            map2.put(t[i], map2.getOrDefault(t[i],0)+1);
+        }
+        
+        
+        for(int i =0; i < t.length; i++){
+            map1.put(t[i], map2.getOrDefault(t[i],0)+1);
+            if(map2.containsKey(t[i]) && map2.get(t[i])==1){
+                map2.remove(t[i]);
+            }
+            else{
+                map2.put(t[i], map2.get(t[i])-1);
+            }
+            if(map1.size() == map2.size()) counter++;
+        }
+        return counter;
+
     }
-
-
-  private Map<Integer,Integer> sliceTheCake(int[] c){
-    int len = c.length;
-    Map<Integer,Integer> map = new HashMap<>();
-    for(int i =0; i < len; i++){
-      map.put(c[i], map.getOrDefault(c[i],0)+1);
-    }
-    return map;
-
-  }
-
 }
