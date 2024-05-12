@@ -1,42 +1,36 @@
 import java.util.*;
 
 class Solution {
-    
-    
-    public int findMaxExcludeInputIdx(int[] arr, int idx){
-        int max = idx == 0 ? arr[1] : arr[0];
-        for(int i = 0; i < arr.length; i++){
-            if(max < arr[i] && idx != i) max = arr[i];                
-        }
-        return max;
-        
-    }
-    
-    int solution(int[][] land) {
-        int len = land.length;
-        int[][] dp = new int[len][4];
-        
-        dp[0][0] = land[0][0];
-        dp[0][1] = land[0][1];
-        dp[0][2] = land[0][2];
-        dp[0][3] = land[0][3];
+  int solution(int[][] land) 
+    {
+        int answer = 0;
 
-        for(int i = 1; i < len; i++){
-            for(int j = 0; j < 4; j++){
-                int max = findMaxExcludeInputIdx(dp[i-1],j);
-                dp[i][j] = land[i][j] + max;
+        // 각 행의 각 열마다 최대값을 저장해 나간다. 
+        int dp[][] = new int[land.length + 1][4];
+
+        // 각 행의 대한 계산
+        for(int i = 1; i <= land.length; i++)
+        {
+            // 각 열에 대한 계산
+            for(int j = 0; j < 4; j++)
+            {
+                // 현재 열을 제외한 나머지 열에 대한 최댓값을 계산한다
+                for(int k = 0; k < 4; k++)
+                {
+                    // 현재 열은 무시
+                    if(k == j)
+                    {
+                        continue;
+                    }
+
+                    // 현재 열을 제외한 나머지 열에 대한 계산값을 비교하고 최댓값을 기록한다. 
+                    dp[i][j] = Math.max(dp[i][j], land[i - 1][j] + dp[i - 1][k]);
+
+                    answer = Math.max(answer, dp[i][j]);
+                }
             }
         }
-        
-        int answer = dp[len-1][0];
-        System.out.println("answer: "+ answer);
-        for(int k = 0; k < 4; k++){
-            if(answer < dp[len-1][k]){
-                answer = dp[len-1][k];
-            }
-        }
+
         return answer;
-        
-
     }
 }
