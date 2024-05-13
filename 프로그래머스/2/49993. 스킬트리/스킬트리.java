@@ -1,56 +1,55 @@
 import java.util.*;
-import java.lang.*;
+import java.util.stream.*;
+
 class Solution {
-    List<String> possilbleList;
     
-    public String[] getPreReqStringArr(String skill){
-        return skill.split("");
+    private List<String> answerList;
+    
+    
+   private void initAnswerList(String skill){
+       int len = skill.length();
+       String str = "";
+       answerList.add(str);
+       for(int i = 0; i < len; i++){
+          String current = String.valueOf(skill.charAt(i));
+          str = str.concat(current);
+           // System.out.println("str: "+ str);
+           answerList.add(str);
+       }
+       
+       
     }
     
-    public boolean isContain(String[] preReq, char c){
-        for(String s: preReq){
-            if(s.charAt(0) == c) return true;
-        }
-        return false;
-    }
-    public void createPossibleList(String skill){
-        possilbleList = new ArrayList<>();
-        possilbleList.add("");
-        for(int i = 1; i < skill.length()+1; i++){
-            possilbleList.add(skill.substring(0,i));
-            }
-        }
-    
-    
-    
-    
-    
-    public int solution(String skill, String[] s) {
-        int counter =0;
-        String[] preReq = getPreReqStringArr(skill);
-        createPossibleList(skill);
-        for(int i =0; i < s.length; i++){
-            Stack<Character> stk = new Stack<>();
-            StringBuilder sb = new StringBuilder();
-            for(int j = 0; j < s[i].length(); j++){
-                char c = s[i].charAt(j);
-                if(isContain(preReq,c)){
-                    stk.push(c);
+    public int solution(String skill, String[] st) {
+        int answer = 0;
+        answerList = new ArrayList<>();
+        initAnswerList(skill);
+        String[] skills = skill.split("");
+        
+        List<String> skillList = Arrays.stream(skills).map(s->s).collect(Collectors.toList());
+        
+        
+        for(int i = 0; i < st.length; i++){
+            Queue<String> q = new LinkedList<>();
+            String current = st[i];
+            String result="";
+            for(int j = 0; j < st[i].length(); j++){
+                char currentChar = current.charAt(j);
+                String currentStr = String.valueOf(currentChar);
+                if(skillList.contains(currentStr)){
+                    q.add(currentStr);
                 }
-            }
-                while(!stk.isEmpty()){
-                    sb.append(String.valueOf(stk.pop()));
-                }
-                    String ordered = sb.reverse().toString();
-                    // System.out.println("ordered: "+ ordered);
-                        if(possilbleList.contains(ordered)){
-                              counter++;      
-                        } 
                     
-        
+                }
+            while(!q.isEmpty()){
+                result = result.concat(q.poll());
+            }
+            
+            if(answerList.contains(result)) {
+                answer++;
+            }
+            }
+                return answer;
+
         }
-        
-        
-        return counter;
     }
-}
