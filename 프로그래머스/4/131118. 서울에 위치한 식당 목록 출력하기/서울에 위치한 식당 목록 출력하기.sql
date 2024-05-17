@@ -1,6 +1,8 @@
 -- 코드를 입력하세요
-SELECT DISTINCT RI.REST_ID, RI.REST_NAME, RI.FOOD_TYPE, FAVORITES AS FAVORITES, RI.ADDRESS, ROUND(AVG(RR.REVIEW_SCORE),2) AS SCORE
-FROM REST_INFO AS RI INNER JOIN REST_REVIEW AS RR ON RI.REST_ID = RR.REST_ID
-WHERE RI.ADDRESS LIKE "서울%"
-GROUP BY RI.REST_ID
-ORDER BY SCORE DESC, FAVORITES DESC
+
+
+select rr.rest_id, rest_name, food_type, favorites , address, round(avg(review_score) ,2)as score
+from rest_info as ri inner join rest_review as rr on ri.rest_id = rr.rest_id
+where address like "서울%"
+group by rr.rest_id
+order by score desc, favorites desc
