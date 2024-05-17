@@ -1,16 +1,7 @@
 -- 코드를 입력하세요
+select fo.product_id, product_name, sum(amount) * price as total_sales
+from food_order as fo join food_product as fp on fp.product_id = fo.product_id
+where produce_date like "2022-05%"
+group by fo.product_id
+order by total_sales desc, product_id asc
 
-WITH TOTAL_PRICE AS(
-    SELECT FO.PRODUCT_ID, PO.PRODUCT_NAME, SUM(AMOUNT) * PO.PRICE AS TOTAL
-    FROM FOOD_ORDER AS FO JOIN FOOD_PRODUCT AS PO ON FO.PRODUCT_ID = PO.PRODUCT_ID
-    WHERE PRODUCE_DATE LIKE '2022-05%'
-    GROUP BY FO.PRODUCT_ID
-)
-
-# SELECT *
-# FROM TOTAL_PRICE
-
-SELECT DISTINCT PO.PRODUCT_ID,  PO.PRODUCT_NAME, PO.TOTAL AS TOTAL_SALES
-FROM FOOD_ORDER AS FO INNER JOIN TOTAL_PRICE AS PO ON FO.PRODUCT_ID = PO.PRODUCT_ID
-WHERE PRODUCE_DATE LIKE '2022-05%'
-ORDER BY 3 DESC , 1
