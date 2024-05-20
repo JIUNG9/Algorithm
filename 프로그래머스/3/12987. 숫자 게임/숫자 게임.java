@@ -1,54 +1,28 @@
 import java.util.*;
 class Solution {
-    public int solution(int[] a, int[] b) {
-        int counter = 0;
+    public int solution(int[] A, int[] B) {
+        Arrays.sort(B);
+        Arrays.sort(A);
+        
+        int answer = 0;
         int aIdx = 0;
         int bIdx = 0;
-        int aLen = a.length;
-        int bLen = b.length;
+        int aLen = A.length;
+        int bLen = B.length;
         
-        Arrays.sort(a);
-        Arrays.sort(b);
-    
         while(aIdx < aLen && bIdx < bLen){
-            
-            
-            
-            //무승부
-            if(b[bIdx] == a[aIdx] ){
-                
+            if(B[bIdx] > A[aIdx]){
                 bIdx++;
-                continue;
-            }
-            
-            
-            //B가 더 작은 경우
-           else if(aIdx < aLen && bIdx < bLen && b[bIdx] < a[aIdx]){
-                while( bIdx < bLen && b[bIdx] < a[aIdx]){
-                    bIdx++;
-                }
-                //이길 수 있는 방법이 존재하지 않음 -> bIdx를 계속 더했으므로, OutOfIdx
-                if(bIdx >= bLen) break;
-                
-            
-                //이제 B가 이길 수 있는 경우
-                else{
-                    aIdx++;
-                    bIdx++;
-                    counter++;
-                }
-                continue;
-            }
-            
-            
-            else if(aIdx < aLen && bIdx < bLen && b[bIdx] > a[aIdx]){
-                counter++;
                 aIdx++;
-                bIdx++;
+                answer++;
                 continue;
             }
+            if(B[bIdx] <= A[aIdx]){
+                bIdx++;
+            }
+                    
         }
-        return counter;
         
+        return answer;
     }
 }
