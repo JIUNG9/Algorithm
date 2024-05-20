@@ -1,4 +1,12 @@
-SELECT DISTINCT D.ID, D.EMAIL, D.FIRST_NAME, D.LAST_NAME
-FROM DEVELOPERS AS D  JOIN SKILLCODES AS S ON S.CODE & D.SKILL_CODE = S.CODE
-WHERE S.CATEGORY LIKE 'Front End'
-ORDER BY D.ID ASC
+-- 코드를 작성해주세요
+WITH get_front as 
+(
+    select category, sc.code
+    from skillcodes as sc
+    where category like "Front%"
+)   
+
+
+select distinct id, email, first_name, last_name
+from DEVELOPERS as d INNER JOIN get_front as gf on gf.code & d.skill_code 
+order by id asc
