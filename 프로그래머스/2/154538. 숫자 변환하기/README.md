@@ -2,86 +2,14 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/154538) 
 
-### 성능 요약
+### Approach
+1. Top-down (DFS)
+2. Down-top (BFS)
 
-메모리: 72.8 MB, 시간: 0.77 ms
+### Big O analysis
+- DFS : when x is '1' and y is '100,000', n = 1. the depth of (+) operation is O(100,000) and * 2 operation will be log(100,000) also * 3 operation log(100,000) so 14 * 100,000 for fisrt DFS and when first DFS is pop from the stack when next *2 operation is pushed into stack also 99,998 times of + operation will be occured, so O(99,998) * 14, and next one is O(99,996) * 14. and consecutive operation will be SUM(O(100,000 - 2*50,000) * 14) this is only applied second DFS operation If apply the third DFS which multiply 3. need more times
 
-### 구분
-
-코딩테스트 연습 > 연습문제
-
-### 채점결과
-
-정확성: 100.0<br/>합계: 100.0 / 100.0
-
-### 제출 일자
-
-2024년 05월 17일 17:48:29
-
-### 문제 설명
-
-<p>자연수 <code>x</code>를 <code>y</code>로 변환하려고 합니다. 사용할 수 있는 연산은 다음과 같습니다.</p>
-
-<ul>
-<li><code>x</code>에 <code>n</code>을 더합니다</li>
-<li><code>x</code>에 2를 곱합니다.</li>
-<li><code>x</code>에 3을 곱합니다.</li>
-</ul>
-
-<p>자연수 <code>x</code>, <code>y</code>, <code>n</code>이 매개변수로 주어질 때, <code>x</code>를 <code>y</code>로 변환하기 위해 필요한 최소 연산 횟수를 return하도록 solution 함수를 완성해주세요. 이때 <code>x</code>를 <code>y</code>로 만들 수 없다면 -1을 return 해주세요.</p>
-
-<hr>
-
-<h5>제한사항</h5>
-
-<ul>
-<li>1&nbsp;≤&nbsp;<code>x</code> ≤ <code>y</code>&nbsp;≤ 1,000,000</li>
-<li>1 ≤ <code>n</code> &lt; <code>y</code></li>
-</ul>
-
-<hr>
-
-<h5>입출력 예</h5>
-<table class="table">
-        <thead><tr>
-<th>x</th>
-<th>y</th>
-<th>n</th>
-<th>result</th>
-</tr>
-</thead>
-        <tbody><tr>
-<td>10</td>
-<td>40</td>
-<td>5</td>
-<td>2</td>
-</tr>
-<tr>
-<td>10</td>
-<td>40</td>
-<td>30</td>
-<td>1</td>
-</tr>
-<tr>
-<td>2</td>
-<td>5</td>
-<td>4</td>
-<td>-1</td>
-</tr>
-</tbody>
-      </table>
-<hr>
-
-<h5>입출력 예 설명</h5>
-
-<p>입출력 예 #1<br>
-<code>x</code>에 2를 2번 곱하면 40이 되고 이때가 최소 횟수입니다.</p>
-
-<p>입출력 예 #2<br>
-<code>x</code>에 <code>n</code>인 30을 1번 더하면 40이 되고 이때가 최소 횟수입니다.</p>
-
-<p>입출력 예 #3<br>
-<code>x</code>를 <code>y</code>로 변환할 수 없기 때문에 -1을 return합니다.</p>
-
+- BFS : Down-Top approach
+  * This will gurantee the shortest path to be from y to x
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
