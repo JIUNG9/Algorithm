@@ -1,29 +1,29 @@
+
 import java.util.*;
 class Solution {
-    public int solution(int[][] r) {
-        Arrays.sort(r,(o1,o2)->{
-            return Integer.compare(o1[1],o2[1]);
+    public int solution(int[][] routes) {
+        Arrays.sort(routes, (arr1,arr2)->{
+            return Integer.compare(arr1[1],arr2[1]);
         });
+        int camera = 0;
+        int len = routes.length;
+        int idx = 0;
+        int currentStartPointIdx = 0;
+        int currentEndPointIdx = 0;
         
         
-        
-        int counter = 1;
-        int len = r.length;
-        int camPosition = r[0][1];
-        for(int i = 1; i < len; i++){
-            // System.out.println("r[" + i + "][0]: " + r[i][0]);
-            // System.out.println("r[" + i + "][1]: " + r[i][1]);
-
-            if(r[i][0] > camPosition){
-                counter++;
-                camPosition = r[i][1];
-            } 
+        while(currentEndPointIdx < len && currentStartPointIdx < len){
             
-            
+             if(routes[currentEndPointIdx][1] >= routes[currentStartPointIdx][0]){
+                currentStartPointIdx++;
+                 
+            }
+            else{
+                currentEndPointIdx = currentStartPointIdx;
+                camera++;   
+            }
             
         }
-        return counter;
-        
-        
+        return camera+1;
     }
 }
