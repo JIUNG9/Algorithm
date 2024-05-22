@@ -1,7 +1,9 @@
 import java.util.*;
 class Solution {
+    
     private Set<Integer> set;
     private boolean[] used;
+    
     public int solution(String numbers) {
         set = new HashSet<>();
         String[] arr = numbers.split("");
@@ -31,7 +33,6 @@ public boolean isPrime(int n) {
     if (n == 2) return true;  
     if (n % 2 == 0) return false; 
 
-    // Check for factors from 3 to sqrt(n)
     int sqrt = (int) Math.sqrt(n);
     for (int i = 3; i <= sqrt; i += 2) {
         if (n % i == 0) {
