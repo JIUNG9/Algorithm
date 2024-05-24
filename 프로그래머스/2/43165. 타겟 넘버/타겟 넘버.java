@@ -1,22 +1,18 @@
 class Solution {
-
-    private int answer = 0;
-  public int solution(int[] numbers, int target) {
-    dfs(numbers, 0, 0, numbers.length, target);
-    return answer;
-  }
-
-  public void dfs(int[] arr, int sum, int currentLen, int len, int target) {
-
-    if (currentLen == len) {
-      if (target == sum ) {
-        answer++;
-      }
-    } else {
-      dfs(arr, sum + arr[currentLen], currentLen + 1, len, target);
-      dfs(arr, sum - arr[currentLen], currentLen + 1, len, target);
+    private int counter = 0;
+    public int solution(int[] numbers, int target) {
+        
+        dfs(0,target, numbers,0);
+        return counter;
     }
-  }
-    
-    
+    public void dfs(int sum, int target, int[] numbers, int idx){
+        if(idx == numbers.length){
+          if(sum == target) counter++;  
+        } 
+        
+        if(idx < numbers.length){
+                dfs(sum + numbers[idx], target, numbers, idx+1);
+                dfs(sum - numbers[idx], target, numbers, idx+1);
+            }
+    }
 }
