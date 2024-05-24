@@ -10,9 +10,9 @@
 
 ```java
 dfs(currentStr, targetStr)
-if(currentStr.equals(targetStr) answer = currentCounter
-        for(iterating all vowels)
-                if(currentStr.length() < 5) dfs(currentStr + current vowel, target)
+        if(currentStr.equals(targetStr) answer = currentCounter
+                for(iterating all vowels)
+                        if(currentStr.length() < 5) dfs(currentStr + current vowel, target)
 
 ```
 
