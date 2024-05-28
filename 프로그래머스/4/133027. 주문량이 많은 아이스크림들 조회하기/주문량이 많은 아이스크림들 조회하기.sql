@@ -1,18 +1,14 @@
--- 코드를 입력하세요
--- 7월 아이스크림 총 주문량과 상반기의 아이스크림 총 주문량을 더한 값이 큰 순서대로 상위 3개의 맛을 조회하는 SQL 문을 작성해주세요.
-WITH TOTAL_OF_FIRST_HALF AS(
-    SELECT *,SUM(TOTAL_ORDER) AS SUM_OF_HALF
-    FROM FIRST_HALF
-    GROUP BY FLAVOR
-),
+with j_total_sales as (
 
- JULY_OF_SUM AS(
-    SELECT *,SUM(TOTAL_ORDER) AS SUM_OF_JULY
-    FROM JULY
-    GROUP BY FLAVOR
+    select j.flavor, sum(total_order) as total_order
+    from july as j
+    group by j.flavor
 )
 
-SELECT J.FLAVOR
-FROM JULY_OF_SUM AS J JOIN TOTAL_OF_FIRST_HALF AS T ON J.SHIPMENT_ID = T.SHIPMENT_ID
-GROUP BY J.FLAVOR
-ORDER BY (SUM_OF_JULY + SUM_OF_HALF) DESC LIMIT 3
+
+
+
+SELECT j.flavor
+from j_total_sales as j inner join first_half as fh on fh.flavor = j.flavor
+group by j.flavor
+order by (j.total_order + fh.total_order) desc limit 3
