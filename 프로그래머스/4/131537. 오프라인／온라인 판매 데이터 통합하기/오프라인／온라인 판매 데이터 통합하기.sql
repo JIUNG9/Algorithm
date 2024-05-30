@@ -1,20 +1,14 @@
-WITH LEFT_OUTER AS(
-    SELECT DATE_FORMAT(OFS.SALES_DATE,"%Y-%m-%d") AS SALES_DATE, OFS.PRODUCT_ID, NULL AS USER_ID , OFS.SALES_AMOUNT AS SALES_AMOUNT
-    FROM OFFLINE_SALE AS OFS 
-    WHERE OFS.SALES_DATE BETWEEN '2022-03-01' AND '2022-03-31'
+-- 코드를 입력하세요
+    select date_format(sales_date,"%Y-%m-%d") as sales_date, product_id, NULL as user_id, sales_amount
+    from offline_sale
+    where sales_date like "2022-03%"
+    # order by 1,2,3
 
+    union 
+    
+    select date_format(sales_date,"%Y-%m-%d") as sales_date, product_id, user_id, sales_amount
+    from online_sale
+    where sales_date like "2022-03%"
+    order by 1,2,3
+    
 
-
-),
-RIGHT_OUTER AS(
-    SELECT DATE_FORMAT(ONS.SALES_DATE,"%Y-%m-%d") AS SALES_DATE, ONS.PRODUCT_ID, ONS.USER_ID, ONS.SALES_AMOUNT AS SALES_AMOUNT
-    FROM  ONLINE_SALE AS ONS 
-    WHERE (ONS.SALES_DATE BETWEEN '2022-03-01' AND '2022-03-31')
-
-
-)
-
-(SELECT * FROM LEFT_OUTER)
-UNION ALL
-(SELECT * FROM RIGHT_OUTER)
-ORDER BY SALES_DATE,PRODUCT_ID,USER_ID
