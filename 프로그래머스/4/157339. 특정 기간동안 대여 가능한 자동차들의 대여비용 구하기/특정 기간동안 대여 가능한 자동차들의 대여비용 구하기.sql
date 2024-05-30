@@ -10,9 +10,7 @@ with get_specific_type as (
     where END_DATE >= '2022-11-01'
 )
 
-# select *
-# from filter_date
-
+ 
 
 select a.car_id, a.car_type, round(daily_fee * (1-(discount_rate* 0.01)),0) * 30 as fee
 from get_specific_type as a inner join CAR_RENTAL_COMPANY_DISCOUNT_PLAN as b on a.car_type = b.car_type
