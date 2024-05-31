@@ -5,6 +5,6 @@
 ### Approach
 - 3월의 데이터를 합쳐서 -> This meant not using the aggregate function(grouop by)
 - There is null user_id at the result from the off_line table. so by using just join can't show the user_id as null only for the data from the off_line.
-- considering above two condition. use the union keyword. filter the data from one table and another one and union.
+- Considering above two condition. use the union keyword. filter the data from one table and another one and union.
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
