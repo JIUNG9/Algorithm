@@ -1,7 +1,7 @@
 -- 코드를 입력하세요
-SELECT USER_ID, NICKNAME,SUM(PRICE) AS TOTAL_SALES
-FROM USED_GOODS_USER AS UU INNER JOIN USED_GOODS_BOARD AS UG ON UU.USER_ID = UG.WRITER_ID
-WHERE STATUS LIKE "DONE"
-GROUP BY WRITER_ID
-HAVING SUM(PRICE) >= 700000
-ORDER BY 3
+select user_id, nickname, sum(price) as total_sales
+from used_goods_board as ugb inner join used_goods_user as ugu on ugu.user_id = ugb.writer_id
+where status like "DONE"
+group by user_id
+having sum(price) >= 700000
+order by 3 asc
