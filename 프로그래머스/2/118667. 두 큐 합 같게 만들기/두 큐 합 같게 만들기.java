@@ -1,58 +1,53 @@
-import java.util.*;
-import java.util.stream.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.stream.Collectors;
 
 class Solution {
     
-    Queue<Integer> q1;
-    Queue<Integer> q2;
+    private Queue<Integer> q1;
+    private Queue<Integer> q2;
+    private long q1Sum = -1L;
+    private long q2Sum = -1L;
+    private long target = -1L;
+    private int counter = 0;
     
-    public long getSum(int[] arr){
-        int len = arr.length;
-        int sum = 0;
-        for(Integer i : arr){
-            sum+=i;
-        }
-        return sum;
-    }
-    public int solution(int[] queue1, int[] queue2) {
-        
-        int counter = 0;
-        List<Integer> list1 = Arrays.stream(queue1).boxed().collect(Collectors.toList());
-        List<Integer> list2 = Arrays.stream(queue2).boxed().collect(Collectors.toList());
-        q1 = new LinkedList<>(list1);
-        q2 = new LinkedList<>(list2);
-        
-        int limit = 600000;
-        long q1Sum = getSum(queue1);
-        long q2Sum = getSum(queue2);
-        
-        
-        while(!q1.isEmpty() && !q2.isEmpty()){
+public void init(int[] arr1, int[] arr2) {
+    q1Sum = Arrays.stream(arr1).sum();
+    q2Sum = Arrays.stream(arr2).sum();
+
+    q1 = new LinkedList<>(Arrays.stream(arr1).boxed().collect(Collectors.toList()));
+    q2 = new LinkedList<>(Arrays.stream(arr2).boxed().collect(Collectors.toList()));
+
+    target = (q1Sum + q2Sum) / 2;
+
+  }
     
-            if(q1Sum == q2Sum) return counter;
-            if(counter > limit) return -1; 
-                
-            else if(q1Sum < q2Sum){    
-                int value = q2.poll();
-                q1Sum+=value;
-                q2Sum-=value;
-                q1.add(value);
-                counter++;
-            }
-            else{
-                int value = q1.poll();
-                q2Sum+=value;
-                q1Sum-=value;
-                q2.add(value);
-                counter++;
-            }
-            
-        }
-        
-        return -1;
-        
-        
-        
-        
+
+
+  public int solution(int[] queue1, int[] queue2) {
+      
+    init(queue1, queue2);
+      
+      
+    while (counter <= queue1.length * 3 - 1) {
+      if (q1Sum == q2Sum && q1Sum == target) {
+        return counter;
+      } else if (q1Sum < q2Sum) {
+        int q2Element = q2.poll();
+        q1Sum += q2Element;
+        q2Sum-=q2Element;
+        q1.add(q2Element);
+        counter++;
+      } else if(q1Sum > q2Sum) {
+        int q1Element = q1.poll();
+        q2Sum += q1Element;
+        q1Sum-=q1Element;
+        q2.add(q1Element);
+        counter++;
+      }
     }
+    return -1;
+  }
+
 }
