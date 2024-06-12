@@ -11,13 +11,7 @@ with recursive cte as(
 
 )
 
-# select c.hour , count(*) as count
-select c.hour, 
-case 
-when animal_id is null then count(animal_id)
-else count(animal_id)
-end as count
-
+select hour, count(animal_id) as count
 from cte as c left join animal_outs as ao on c.hour = hour(ao.datetime)
 group by hour
 order by 1
