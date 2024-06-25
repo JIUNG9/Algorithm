@@ -15,13 +15,9 @@ class Solution {
                     isFirstLetterAfterWhiteSpace = false;
                     sb.append(changeToUpper(s.charAt(i)));
                 }
-                else if(!isLetter(s.charAt(i))){
-                    isFirstLetterAfterWhiteSpace = false;
-                    sb.append(s.charAt(i));
-                }
-                else if(isLetter(s.charAt(i))&& !isFirstLetterAfterWhiteSpace){
+                else {
                     sb.append(changeToLowerCase(s.charAt(i)));
-                    
+                    isFirstLetterAfterWhiteSpace = false;
                 }
             }
             
