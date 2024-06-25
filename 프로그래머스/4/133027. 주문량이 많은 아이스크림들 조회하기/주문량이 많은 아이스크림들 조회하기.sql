@@ -1,14 +1,23 @@
-with j_total_sales as (
-
-    select j.SHIPMENT_ID,j.flavor, sum(total_order) as total_order
-    from july as j
-    group by j.flavor
+-- 코드를 입력하세요
+with get_first_sum as (
+    select flavor, sum(total_order) as t_order
+    from first_half
+    group by flavor
+),
+get_half_sum as(
+    select flavor, sum(total_order) as t_order
+    from july
+    group by flavor
 )
 
+, total as(
+    select * from get_first_sum
+    union
+    select * from get_half_sum
+)
+select flavor
+from total
+group by flavor
+order by sum(total.t_order) desc limit 3
 
 
-
-SELECT j.flavor
-from j_total_sales as j inner join  first_half as fh on fh.flavor = j.flavor
-# order by sum(j.total_order) desc limit 3
-order by j.total_order + fh.total_order desc limit 3
