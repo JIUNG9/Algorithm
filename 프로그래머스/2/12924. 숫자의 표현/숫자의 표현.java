@@ -1,16 +1,28 @@
+import java.util.*;
 class Solution {
- public int solution(int n) {
+    private int answer = 0;
+   public int solution(int target) {
+        Queue<Integer> q = new LinkedList<>();
+        int sum = 1;
+        int num = 1;
 
-    int counter = 0;
-    for(int i = 1; i <= n; i++){
-      int sum = 0;
-      int j = i;
-      while (sum < n) {
-        sum+=j++;
-      }
-      if(sum==n) counter++;
+        q.add(1);
+        num++;
+
+        while(!q.isEmpty() && q.peek() <= target){
+            if(sum >= target){
+                if(sum == target) answer++;
+                sum-=q.poll();
+            }
+            if(sum < target){
+                q.add(num);
+                sum+=num++;
+            }
+        }
+
+
+        return answer;
+
     }
 
-    return counter;
-  }
 }
