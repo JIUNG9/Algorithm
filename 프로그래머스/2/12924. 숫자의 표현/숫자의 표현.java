@@ -9,7 +9,7 @@ class Solution {
         q.add(1);
         num++;
 
-        while(!q.isEmpty() && q.peek() <= target){
+        while(q.peek() <= target){
             if(sum >= target){
                 if(sum == target) answer++;
                 sum-=q.poll();
