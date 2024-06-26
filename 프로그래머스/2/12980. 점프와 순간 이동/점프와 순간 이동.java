@@ -1,14 +1,12 @@
-import java.util.*;
+
 
 public class Solution {
-  public int solution(int n) {
-    int counter = 0;
-    while (n > 0) {
-      if (n % 2 == 1) {
-        counter++;
-      }
-      n /= 2;
+    private int answer = 0;
+    public int solution(int n) {
+        while(n > 0){
+            if(n % 2 == 1) answer++;
+            n/=2;
+        }   
+        return answer;
     }
-    return counter;
-  }
 }
