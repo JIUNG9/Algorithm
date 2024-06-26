@@ -7,7 +7,7 @@ with get_specific_type as (
 , filter_date as (
     select car_id
     from car_rental_company_rental_history
-    where END_DATE >= '2022-11-01'
+    where END_DATE > '2022-11-01'
 )
 
  
