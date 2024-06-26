@@ -1,15 +1,15 @@
 class Solution {
-  public int solution(int n) {
-
-    int[] fibo = new int[100001];
-    fibo[0] = 0;
-    fibo[1] = 1;
-    fibo[2] = 1;
-
-    for(int i = 2; i <= n; i++){
-        fibo[i] = (fibo[i-2] + fibo[i-1] ) % 1234567;
+    private int[] dp;
+    public int solution(int n) {
+        dp = new int[n+1];
+        dp[0] = 0;
+        dp[1] = 1;
+        for(int i = 2; i <= n; i++){
+            dp[i] = (dp[i-2] + dp[i-1])%1234567;
+        }
+        return dp[n];
+        
+        
+    
     }
-
-    return fibo[n] ;
-  }
 }
