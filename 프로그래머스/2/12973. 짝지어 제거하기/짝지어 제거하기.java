@@ -1,36 +1,37 @@
-import java.util.Stack;
-
+import java.util.*;
 
 class Solution
 {
- public int solution(String s) {
+    public int solution(String s)
+    {
+        Stack<Character> stk = new Stack<>();
+        
+        stk.push(s.charAt(0));
 
-    Stack<Character> stackA = new Stack<>();
-    Stack<Character> stackB = new Stack<>();
-    int len = s.length();
-    for (int i = 0; i < len; i++) {
-      stackA.push(s.charAt(i));
-    }       
-
-    stackB.push(stackA.pop());
-
-    while (!stackA.isEmpty()) {
-      char temp = stackA.pop();
-      if(!stackB.isEmpty()&&stackB.peek()==temp){
-        stackB.pop();
-      }
-      else{
-        stackB.push(temp);
-      }
+        
+        for(int i = 1; i < s.length(); i++){
+            if(!stk.isEmpty() && stk.peek().equals(s.charAt(i))){
+                stk.pop();
+            }
+            else{
+                stk.push(s.charAt(i));
+            }   
+        }
+        
+        if(stk.size()%2==1) return 0;
+        
+        while(!stk.isEmpty()){
+            Character top = stk.pop();
+            Character next = stk.pop();
+            if(!top.equals(next)) return 0;
+        }
+        return 1;
+        
+       
+        
+    
+        
     }
- 
-    while (!stackB.isEmpty()) {
-      char c = stackB.pop();
-      if (stackB.isEmpty() || c != stackB.pop()) {
-        return 0;
-      }
-    }
-    return 1;
-  }
+    
+
 }
-
