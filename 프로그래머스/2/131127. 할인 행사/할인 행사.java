@@ -38,8 +38,5 @@ class Solution {
         }
     }
     
-    public int updateTheQualifedDate(int date){
-        
-        return date < 10 ? 0 : date-10;
-    }
+
 }
