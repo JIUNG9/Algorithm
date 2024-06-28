@@ -1,20 +1,22 @@
-WITH USER_N AS (
-SELECT  *
-  FROM  USER_INFO AS U
- WHERE  YEAR(JOINED) = 2021
+-- 코드를 입력하세요
+with get_member_joined_counter_at_2021 as(
+    select count(*) as num
+    from user_info
+    where joined like "2021%"
 )
-#2021년 가입한 회원
 
-SELECT  YEAR(O.SALES_DATE) AS YEAR
-        ,MONTH(O.SALES_DATE) AS MONTH
-        ,COUNT(DISTINCT O.USER_ID) AS PUCHASED_USERS #구매이력있는 회원
-        ,ROUND(
-        COUNT(DISTINCT O.USER_ID)/(SELECT COUNT(*) FROM USER_N), 1) AS PUCHASED_RATIO
-  FROM  ONLINE_SALE AS O
-  JOIN  USER_N AS UN
-    ON  O.USER_ID = UN.USER_ID
+, member_who_joined_at_2021 as(
 
- GROUP
-    BY  YEAR, MONTH
- ORDER
-    BY  YEAR, MONTH
+    select user_id
+    from user_info
+    where joined like "2021%"
+
+)
+
+
+select YEAR(sales_date) as year, Month(sales_date) as month, count(distinct os.user_id) as purchased_users, round(count(distinct os.user_id)/num,1) as puchased_ratio
+from member_who_joined_at_2021 as mw inner join online_sale as os on os.user_id = mw.user_id, get_member_joined_counter_at_2021
+group by year,month
+
+
+
