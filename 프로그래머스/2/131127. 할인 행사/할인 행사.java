@@ -1,30 +1,45 @@
 import java.util.*;
+import java.util.stream.*;
+
 class Solution {
-    
-    //discount 시작부터 10개까지  모두 want의 넘버의 개수를 충족하면 정답 개수 하나 추가
-    public int solution(String[] w, int[] n, String[] d) {
-        int counter  = 0;
+    private Map<String,Integer> wantedMap;
+    private int counter = 0;
+    public int solution(String[] want, int[] number, String[] discount) {
         
-        for(int i = 0; i < d.length; i++){
-            Map<String,Integer> map = new HashMap<>();
-            for(int j =i; j < i+10 && j < d.length; j++){            
-                map.put(d[j], map.getOrDefault(d[j],0)+1);
-            }
-            if(isSatisfyWantedDiscounted(map, w, n)){
+        initMap(want,number);
+        int discountLen = discount.length;
+    
+        for(int i = 0; i <  discountLen; i++){
+            if(wantedMap.containsKey(discount[i])){
+                    int value = wantedMap.get(discount[i]);
+                    wantedMap.put(discount[i], value - 1);
+            } 
+            if(i > 9){
+                String beforeBargained = discount[i-10];
+                if(wantedMap.containsKey(beforeBargained)){
+                    wantedMap.put(beforeBargained, wantedMap.get(beforeBargained)+1);
+                }
+                }
+            if(isMapValuesAllBargained()) {
                 counter++;
             }
-            
         }
-        
-        
         return counter;
+      
+    }
+    public boolean isMapValuesAllBargained(){
+        return wantedMap.values().stream().filter(i -> i > 0).count() > 0 ? false: true;
+    }
+    public void initMap(String[] want, int[] number){
+
+        wantedMap = new HashMap<>();
+        for(int i = 0; i < want.length; i++){
+            wantedMap.put(want[i], number[i]);
+        }
     }
     
-    public boolean isSatisfyWantedDiscounted(Map<String, Integer> map, String w[], int n[]){
+    public int updateTheQualifedDate(int date){
         
-        for(int i =0; i < w.length; i++){
-            if(map.get(w[i]) ==null || map.get(w[i]) < n[i]) return false;
-        }
-        return true;
+        return date < 10 ? 0 : date-10;
     }
 }
