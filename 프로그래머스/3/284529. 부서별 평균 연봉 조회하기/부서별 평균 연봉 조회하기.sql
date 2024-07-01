@@ -1,11 +1,4 @@
--- 코드를 작성해주세요
-
-# SELECT 부서ID, 부서명, 평균연봉
-# FROM HR_DEPARTMENT
-# GROUP BY 부서별
-
-
-SELECT HD.DEPT_ID,DEPT_NAME_EN, ROUND(AVG(SAL),0)AS AVG_SAL
-FROM HR_DEPARTMENT AS HD JOIN HR_EMPLOYEES AS HE ON HD.DEPT_ID = HE.DEPT_ID
-GROUP BY DEPT_ID
-ORDER BY AVG_SAL DESC
+select dp.dept_id, dept_name_en, round(avg(sal),0)as avg_sal
+from hr_employees as emp inner join hr_department as dp on dp.dept_id = emp.dept_id
+group by dp.dept_id
+order by 3 desc
