@@ -44,6 +44,23 @@ below code is fixed code
 ```
 
 
+### re-Approach
+
+- why can't use the dfs -> when the element is pop from the stk. the prev and next value is not sequentional from current Idx.
+- just get the sum from current Idx to len + current Idx will be considered all of the cases. so iterating all elements and get the sum
+- This approach just takes the n^2 approach
+
+
+
+``` java
+while(iterate all elemetns)
+ while(currentIdx < currentIdx + len)
+   sum+=elements[currentIdx++%len]
+   set.add(sum);
+
+return set.size();
+```
+
 
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
