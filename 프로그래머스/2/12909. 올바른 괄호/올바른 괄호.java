@@ -1,42 +1,25 @@
-import java.util.Stack;
-
-
+import java.util.*;
 class Solution {
-public boolean solution(String s) {
+    
+    Stack<Character> stk;
+    boolean solution(String s) {
+        stk = new Stack<>();
+        int len = s.length();
+        
+        for(int i = 0; i < len; i++){
+            char currentC = s.charAt(i);
+            if(currentC == '(') stk.push(currentC);
+            else{
+                if(!stk.isEmpty()) stk.pop();
+                else return false;
+            }
+        }
+        if(stk.isEmpty()) return true;
+        return false;
 
-    //1. make two stacks A and B
-    //2. save the all elements At A stack from rear
-    //(loop) termination :
-    // If A stack is empty and B is not return false
-    // If A stack is empty and B is empty return true
-    // => this mean iterate while A is empty
-    //if(b.isEmpty()) b.push(a.pop())
+        
+        
 
-    
-    
-
-    
-    Stack<Character> a = new Stack<>();
-    Stack<Character> b = new Stack<>();
-    int len = s.length();
-    
-    if(len%2==1) return false;
-    
-    //push all elements from rear
-    for(int i = len-1; i >= 0; i--){
-      a.push(s.charAt(i));
+        
     }
-
-    while(!a.isEmpty()){
-      if(b.isEmpty()) b.push(a.pop());
-      if(b.peek()=='(' && a.peek()==')'){
-        b.pop();
-        a.pop();
-      }
-      else{
-        b.push(a.pop());
-      }
-    }
-    return b.isEmpty();
-  }
 }
