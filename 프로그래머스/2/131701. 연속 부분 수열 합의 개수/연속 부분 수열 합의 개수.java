@@ -1,25 +1,23 @@
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 class Solution {
-public int solution(int[] elements) {
-    Set<Integer> set = new HashSet<>();
-    function(set, elements, 0, 0);
-    return set.size();
-
-  }
-
-  public void function(Set<Integer> set, int[] elements, int sum, int index) {
-
-    for (int i = 0; i < elements.length; i++) {
-      for (int j = 0; j < elements.length; j++) {
-        sum+=elements[j];
-        set.add(sum);
-      }
-      int temp = elements[0];
-      System.arraycopy(elements, 1, elements, 0, elements.length - 1);
-      elements[elements.length - 1] = temp;
-      sum = 0;
+    Set<Integer> set;
+    public int solution(int[] elements) {
+        int len = elements.length;
+         set = new HashSet<>(); 
+        for(int i = 0; i < len; i++){
+            int sum = 0;
+            for(int j = i; j < len + i; j++){               
+                sum+=elements[j % len];
+                set.add(sum);
+            }
+        }
+        return set.size();
     }
-  }
+    public void sout(){
+        for(Integer i : set){
+            System.out.println("i: " + i);    
+        }
+        
+    }
 }
