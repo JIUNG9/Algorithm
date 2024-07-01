@@ -1,21 +1,16 @@
--- 코드를 작성해주세요
-with filter_length_under10 as (
-    
-    select id,fish_type, 
-    case 
+
+with filter_null as(
+    select 
+    case
     when length is null then 10
-    else length 
-    end as length
-    ,time
+    when length is not null then fish_info.length
+    end as length, id, fish_type
     from fish_info
 )
 
-# select *
-# from filter_length_under10
 
-
-select count(*) as fish_count, MAX(length) as max_length, fish_type
-from filter_length_under10
+select count(id) as fish_count, max(length) as max_length, fish_type
+from filter_null
 group by fish_type
-having AVG(LENGTH) >= 33
-order by fish_type asc
+having avg(length) >= 33
+order by 3
