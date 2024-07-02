@@ -1,18 +1,32 @@
+import java.util.stream.*;
 import java.util.*;
 class Solution {
+    List<Integer> list;
+    List<Integer> answerList;
     public int[] solution(int n, long left, long right) {
-        List<Integer> list = new ArrayList<>();
-        for(long i = left; i <= right; i++){
-            if(i / n + 1 < i % n +1){
-                list.add((int) (i % n) + 1);
+        list = new ArrayList<>();
+        answerList = new ArrayList<>();
+        
+        int startRow = (int)(left / n) ;
+        int endRow = (int) (right / n) ; 
+        int startRemainder = (int)(left % n);
+        int endRemainder = (int) (right % n);
+        
+        for(int i = startRow; i <= endRow; i++){
+            int num = i+1;
+            for(int j = 0; j < num; j++){
+                list.add(num);
             }
-            else{
-                list.add((int) (i / n) + 1);
+            for(int k = num+1 ; k <= n; k++){
+                list.add(k);
             }
-        }
-        
-        return list.stream().mapToInt(i->i).toArray();
-        
-        
     }
+
+    for(int i = startRemainder; i <= list.size() - n + endRemainder; i++){
+        answerList.add(list.get(i));
+    }
+    
+    return answerList.stream().mapToInt(i -> i).toArray();
+    
+}
 }
