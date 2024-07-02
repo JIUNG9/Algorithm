@@ -1,59 +1,47 @@
-import java.util.Stack;
-
-
+import java.util.*;
 class Solution {
- public int solution(String s) {
-    int len = s.length();
-    int counter = 0;
-
-    for (int i = 0; i < len; i++) {
-      String leftShifted = leftShift(s, i);
-      if (isCorrectBracket(leftShifted)) {
-        counter++;
-      }
+    private int counter = 0;
+    public int solution(String s) {
+        String moved = s;
+        for(int i = 0; i < s.length(); i++){
+            if(i == 0) {
+                if(isRightBracket(moved)) counter++;
+                
+            }
+            else {
+                moved = moveToLeftOnce(moved);
+                if(isRightBracket(moved)) counter++;
+            }
+        }
+        return counter;
+        
     }
-    return counter;
-  }
-
-  public boolean isCorrectBracket(String s) {
-
-    int len = s.length();
-    Stack<Character> stack = new Stack<>();
-    for (int i = 0; i < len; i++) {
-      if (s.charAt(i) == '(') {
-        stack.push(s.charAt(i));
-      }
-      else if (s.charAt(i) == '{') {
-        stack.push(s.charAt(i));
-      }
-      else if (s.charAt(i) == '[') {
-        stack.push(s.charAt(i));
-      }
-      else if(s.charAt(i) == ')'){
-        if(stack.isEmpty() || stack.peek()!='(') return false;
-           else{
-          stack.pop();
-        }
-      }
-       else if(s.charAt(i) == '}'){
-        if(stack.isEmpty() || stack.peek()!='{') return false;
-        else{
-          stack.pop();
-        }
-      }
-        else if(s.charAt(i) == ']'){
-        if(stack.isEmpty() || stack.peek()!='[') return false;
-           else{
-          stack.pop();
-        }
-      }
+    public String moveToLeftOnce(String s){
+        char firstChar = s.charAt(0);
+        return  s.substring(1) + String.valueOf(firstChar);
     }
-    return stack.isEmpty();
-  }
-
-  public String leftShift(String s, int i) {
-    String temp = s.substring(0, i);
-    String withoutSuffix = s.substring(i);
-    return withoutSuffix.concat(temp);
-  }
+    
+    public boolean isRightBracket(String s){
+        Stack<Character> stk = new Stack<>();
+        
+        for(int i = 0; i < s.length(); i++){
+            char c = s.charAt(i);
+            
+            if(c == '(' || c == '{' || c == '[') 
+            {
+                stk.push(c);
+            }
+            else{
+                if(stk.isEmpty()) return false;
+                else{
+                                    
+                    if(c == ')') if(stk.peek()!= '(') return false; else stk.pop();
+                    if(c == '}') if(stk.peek()!= '{') return false; else stk.pop();
+                    if(c == ']') if(stk.peek()!= '[') return false; else stk.pop();
+                }
+            }
+        }
+        return stk.isEmpty() ? true : false;
+    }
+    
 }
