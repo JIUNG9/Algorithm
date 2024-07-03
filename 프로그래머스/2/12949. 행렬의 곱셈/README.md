@@ -2,53 +2,27 @@
 
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12949) 
 
-### 성능 요약
 
-메모리: 75.8 MB, 시간: 1.24 ms
+### Approach
+- The input of a matrix's row length is the target matrix's row length and the input of the b matrix's width is the target width
+- when made the target[i][j] fix the a matrix's 'i' and move the width position and also fix the b matrix's length and move the length positon
+- But thing is, how much moves? not the target length or width, it is a matrix's width or b matrix's length otherwise between multiply matrix won't be made.
 
-### 구분
+```
+main(int[] a , int[] b)
+int targetWidth = b[0].length;
+int targetLength = a.length;
+int aWidthOrBLength = a[0].length;
 
-코딩테스트 연습 > 연습문제
+for(int i = 0; i < targetLength; i++)
+        for(int j = 0; j < targetWidth; j++)
+                int sum = 0;
+                for(int k = 0; k < aWidthOrBLength; k++)
+                        sum+=(a[i][k] * b[k][j);
+                target[i][j] = sum
 
-### 채점결과
+```
+ 
 
-정확성: 100.0<br/>합계: 100.0 / 100.0
-
-### 제출 일자
-
-2024년 07월 03일 11:58:47
-
-### 문제 설명
-
-<p>2차원 행렬 arr1과 arr2를 입력받아, arr1에 arr2를 곱한 결과를 반환하는 함수, solution을 완성해주세요.</p>
-
-<h5>제한 조건</h5>
-
-<ul>
-<li>행렬 arr1, arr2의 행과 열의 길이는 2 이상 100 이하입니다.</li>
-<li>행렬 arr1, arr2의 원소는 -10 이상 20 이하인 자연수입니다.</li>
-<li>곱할 수 있는 배열만 주어집니다.</li>
-</ul>
-
-<h5>입출력 예</h5>
-<table class="table">
-        <thead><tr>
-<th>arr1</th>
-<th>arr2</th>
-<th>return</th>
-</tr>
-</thead>
-        <tbody><tr>
-<td>[[1, 4], [3, 2], [4, 1]]</td>
-<td>[[3, 3], [3, 3]]</td>
-<td>[[15, 15], [15, 15], [15, 15]]</td>
-</tr>
-<tr>
-<td>[[2, 3, 2], [4, 2, 4], [3, 1, 4]]</td>
-<td>[[5, 4, 3], [2, 4, 1], [3, 1, 1]]</td>
-<td>[[22, 22, 11], [36, 28, 18], [29, 20, 14]]</td>
-</tr>
-</tbody>
-      </table>
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
