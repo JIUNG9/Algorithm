@@ -21,8 +21,8 @@ class Solution {
             visited[0] = true;
             
 
-            dfs(list.get(0)[1],wires);
-            dfs(list.get(0)[0],wires);
+            dfs(list.get(0)[1]);
+            dfs(list.get(0)[0]);
             
             answer = Math.min(Math.abs((connectedLen+1) - (n-(connectedLen+1))),answer);
             list.add(cutNode);
@@ -31,18 +31,18 @@ class Solution {
         
         
     }
-    public void dfs(int endNode, int[][] w){
+    public void dfs(int endNode){
         for(int i = 0 ; i < list.size(); i++){
             if(!visited[i] && endNode == list.get(i)[0]){
                 connectedLen++;
                 visited[i] = true;
-                dfs(list.get(i)[1],w);
+                dfs(list.get(i)[1]);
                 visited[i] = false;
             }
             else if(!visited[i] && endNode == list.get(i)[1]){
                 connectedLen++;
                 visited[i] = true;
-                dfs(list.get(i)[0],w);
+                dfs(list.get(i)[0]);
                 visited[i] = false;
             
             }
