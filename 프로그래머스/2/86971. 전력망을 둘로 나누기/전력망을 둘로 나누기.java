@@ -1,46 +1,52 @@
+import java.util.*;
+import java.util.stream.*;
 class Solution {
+    
+    private boolean[] visited;
+    private List<int[]> list;
+    private int connectedLen = 0;
     private int answer = Integer.MAX_VALUE;
-  private boolean[] visited;
+    
+    public int solution(int n, int[][] wires) {
+        list = Arrays.stream(wires).collect(Collectors.toList());
+        
+        for(int i = 0; i < wires.length; i++){
+            
+            
+            visited = new boolean[wires.length-1];
+            int[] cutNode = wires[i];
+            list.remove(cutNode);
+            
+            connectedLen = 1;
+            visited[0] = true;
+            
 
-
-public int solution(int n, int[][] w) {
-
-    int len = w.length;
-    for (int i = 0; i < len; i++) {
-      int connectedLen;
-      visited = new boolean[len];
-      if (i == len - 1) {
-        connectedLen =dfs(w, i, 0, w[0][0], w[0][1]);
-      } else {
-        connectedLen = dfs(w, i, 0, w[i + 1][0], w[i + 1][1]);
-      }
-      int anotherConnectedLen = n-connectedLen;
-      answer = Math.min(Math.abs(anotherConnectedLen- connectedLen), answer);
+            dfs(list.get(0)[1],wires);
+            dfs(list.get(0)[0],wires);
+            
+            answer = Math.min(Math.abs((connectedLen+1) - (n-(connectedLen+1))),answer);
+            list.add(cutNode);
+        }
+        return answer;
+        
+        
     }
-    return answer;
-  }
-
-  public int dfs(int[][] w, int cut, int counter, int a, int b) {
-    for (int i = 0; i < w.length; i++) {
-      if (i == cut) {
-        continue;
-      }
-      if (!visited[i] && (w[i][0] == a || w[i][1] == a || w[i][0] == b || w[i][1] == b)) {
-        visited[i] = true;
-        dfs(w, cut, counter + 1, w[i][0], w[i][1]);
-      }
+    public void dfs(int endNode, int[][] w){
+        for(int i = 0 ; i < list.size(); i++){
+            if(!visited[i] && endNode == list.get(i)[0]){
+                connectedLen++;
+                visited[i] = true;
+                dfs(list.get(i)[1],w);
+                visited[i] = false;
+            }
+            else if(!visited[i] && endNode == list.get(i)[1]){
+                connectedLen++;
+                visited[i] = true;
+                dfs(list.get(i)[0],w);
+                visited[i] = false;
+            
+            }
+            
+        }
     }
-    return getConnected(visited)+1;
-  }
-
-  private int getConnected(boolean[] visited) {
-    int counter = 0;
-    for (int i = 0; i < visited.length; i++) {
-      if (visited[i]) {
-        counter++;
-      }
-    }
-    return counter;
-  }
-
 }
