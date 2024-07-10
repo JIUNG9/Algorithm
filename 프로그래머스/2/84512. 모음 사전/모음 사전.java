@@ -1,23 +1,24 @@
 class Solution {
-    private int answer = 0;
+    private String[] vowel ={"A","E","I","O","U"};
     private int counter = 0;
-    private String[] vowels = {"A","E","I","O","U"};
+    private int answer = 0;
     
     public int solution(String word) {
-        
         dfs("",word);
         return answer;
     }
-    public void dfs(String currentStr, String target){
-        if(target.equals(currentStr)) answer = counter;
-        for(String currentVowel : vowels){
-            if(currentStr.length() < 5 ){
-                counter++;
-                dfs(currentStr + currentVowel, target);
-            }
-            
+    public void dfs(String current, String target){
+        if(current.equals(target)) {
+            answer = counter;
         }
-            
+        if(current.length() >= 5) return;
+        else{
+            for(String s: vowel){
+                counter++;
+                dfs(current+s, target);
+            }
         }
         
+        
     }
+}
