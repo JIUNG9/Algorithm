@@ -1,34 +1,27 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*; 
+import java.util.stream.*; 
 
 class Solution {
-    private static List<int[]> ansList;
-
-    public static int[][] solution(int n) {
-
-        ansList = new ArrayList<>();
-        dfs(n, 1,3, 2);
-
-
-        int[][] answer = new int[ansList.size()][];
-        for(int i=0; i<ansList.size(); i++){
-            answer[i] = ansList.get(i);
+    List<int[]> list;
+    public int[][] solution(int n) {
+        list = new ArrayList<>();
+        dfs(n, 1,3,2);
+        int[][] answer = new int[list.size()][2];
+        for(int i = 0; i < answer.length; i++){
+            answer[i] = list.get(i);
         }
-
         return answer;
+        
+        
     }
-
-   private static void dfs(int n, int start, int to, int mid) {
+    public void dfs(int n, int start, int to, int mid){
         if(n == 1){
-            ansList.add(new int[]{start, to});
-            return;
+            list.add(new int[]{start,to});
         }
-        dfs(n-1, start, mid, to);
-
-        ansList.add(new int[]{start, to});
-
-        dfs(n-1, mid, to, start);
+        else{
+            dfs(n-1, start, mid, to);
+            list.add(new int[]{start, to});
+            dfs(n-1, mid, to, start);
+        }
     }
 }
-        
-    
