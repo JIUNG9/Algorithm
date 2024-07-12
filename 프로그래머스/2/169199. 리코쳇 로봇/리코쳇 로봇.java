@@ -1,61 +1,102 @@
-import java.util.*;
+ import java.util.*;
+
 class Solution {
+    private int[][] move = {{1,0},{0,1},{-1,0},{0,-1}};
+    private boolean[][] visited;
     
-    int[][] move ={{1,0},{0,1},{-1,0},{0,-1}};
     public int solution(String[] board) {
-        Queue<int[]> q = new LinkedList<>();
-        int[] startP = getPosition(board,'R');
-        int[] endP = getPosition(board,'G');
-        int[] target = getPosition(board,'G');
-        int targetY = endP[0];
-        int targetX = endP[1];
+        int len = board.length;
         int width = board[0].length();
-        int length = board.length;
-        boolean[][] visited = new boolean[length][width];
+        visited = new boolean[len][width];
         
-        q.add(new int[]{startP[0],startP[1], 0});    
+        Location start = findLocation(board, 'R');
+        Location goal = findLocation(board, 'G');
+    
+        Queue<Robot> q = new LinkedList<>(); 
+        q.add(new Robot(start, 0));
+        visited[start.y][start.x] = true;
         
-        while(!q.isEmpty()){
-            int[] currentP = q.poll();
-            int currentX = currentP[1];
-            int currentY = currentP[0];
-            int weight = currentP[2];
-            if(currentX == targetX && currentY == targetY) return weight;
+        while (!q.isEmpty()) {
+            Robot r = q.poll();
+            Location location = r.location;
+            int currentMoveCounter = r.moveCounter;
             
-             for (int[] m : move) {
-                int movedY = currentY;
-                int movedX = currentX;
+            if (location.x == goal.x && location.y == goal.y) {
+                return currentMoveCounter;
+            }
+            
+            for (int[] m : move) {
+                Location nextLocation = new Location(location.y, location.x);
                 
-                while (!(movedY < 0 || movedX < 0 || movedX >= width || movedY >= length || board[movedY].charAt(movedX) =='D')) {
-                        movedX+=m[1];
-                        movedY+=m[0];
+                while (true) {
+                    nextLocation.move(m);
+                    if (isExceededMap(len, width, nextLocation) || isObstacle(board, nextLocation)) {
+                        nextLocation.stepBack(m);
+                        break;
                     }
-                    
+                }
                 
-                movedY-=m[0];
-                movedX-=m[1];
-                
-                if (!visited[movedY][movedX]) {
-                    visited[movedY][movedX] = true;
-                    q.add(new int[]{movedY, movedX, weight + 1});
+                if (!isExceededMap(len, width, nextLocation) && !isVisited(nextLocation.y, nextLocation.x)) {
+                    visited[nextLocation.y][nextLocation.x] = true;
+                    q.add(new Robot(new Location(nextLocation.y, nextLocation.x), currentMoveCounter + 1));
                 }
             }
         }
-    
         return -1;
-        
     }
     
-    
-    public int[] getPosition(String[] board, char target){
-        for(int i = 0; i < board.length; i++){
-            for(int j = 0; j < board[0].length(); j++){
-                if(board[i].charAt(j) == target) return new int[]{i,j};
+    public Location findLocation(String[] m, char c) {
+        int len = m.length;
+        int width = m[0].length();
+        for (int i = 0; i < len; i++) {
+            for (int j = 0; j < width; j++) {
+                if (m[i].charAt(j) == c) return new Location(i, j);
             }
         }
-        return new int[]{-1,-1};
+        return new Location(-1, -1);
+    }
+    
+    public boolean isVisited(int y, int x) {
+        return visited[y][x];
+    }
+    
+    public boolean isObstacle(String[] map, Location location) {
+        return map[location.y].charAt(location.x) == 'D';
     }
 
+    public boolean isExceededMap(int len, int width, Location current) {
+        int x = current.x;
+        int y = current.y;
+        return x < 0 || y < 0 || x >= width || y >= len;
+    }
     
-
+    class Robot {
+        private Location location;
+        private int moveCounter;
+        
+        public Robot(Location location, int moveCounter) {
+            this.location = location;
+            this.moveCounter = moveCounter;
+        }
+    }
+    
+    class Location {
+        private int y;
+        private int x;
+        
+        public Location(int y, int x) {
+            this.x = x;
+            this.y = y;
+        }
+        
+        public void move(int[] direction) {
+            y += direction[0];
+            x += direction[1];
+        }
+        
+        public void stepBack(int[] direction) {
+            y -= direction[0];
+            x -= direction[1];
+        }
+    }
 }
