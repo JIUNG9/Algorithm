@@ -1,26 +1,27 @@
 import java.util.*;
 class Solution {
-    public int[] solution(int[] n) {
-        LinkedList<int[]> q = new LinkedList<>();
-        int[] answer = new int[n.length];
-        for(int i = 0; i < n.length; i++){
-            int currentValue = n[i];
-            while(!q.isEmpty() && q.peekLast()[1] < currentValue){        
-                    int[] arr = q.pollLast();    
-                    int idx = arr[0];
-                    answer[idx] = currentValue;    
-                }
-                        q.add(new int[]{i, currentValue});
-            }
-    
-        while(!q.isEmpty()){
-            int[] arr = q.poll();
-            answer[arr[0]] = -1;
-        }
+    private Stack<int[]> stk;
+    public int[] solution(int[] numbers) {
+        int len = numbers.length;
+        stk = new Stack<>();
+        int[] answer = new int[len];
+        Arrays.fill(answer,-1);
+        stk.push(new int[]{0, numbers[0]});
         
+        for(int i = 1; i< len; i++){
+            
+            int currValue = numbers[i];
+            
+            while(!stk.isEmpty()&& stk.peek()[1] < currValue){
+                int[] lastElement = stk.pop();
+                int idx = lastElement[0];
+                int value = lastElement[1];
+                answer[idx] = currValue;
+                
+            }
+            stk.push(new int[]{i,numbers[i]});
+        }
         return answer;
         
-        }
-        
-        
     }
+}
