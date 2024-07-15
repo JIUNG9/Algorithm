@@ -1,28 +1,26 @@
-import java.util.*;
 class Solution {
-    private int answer = 0;
-   public int solution(int target) {
-        Queue<Integer> q = new LinkedList<>();
-        int sum = 1;
-        int num = 1;
-
-        q.add(1);
-        num++;
-
-        while(q.peek() <= target){
-            if(sum >= target){
-                if(sum == target) answer++;
-                sum-=q.poll();
+    private int counter = 0;
+    public int solution(int n) {
+        //만약 현재 sum이 n보다 작다면 right pointer를 증가시켜 sum에 더한다.
+        //만약 현재 sum이 n보다 크다면 left pointer를 증가시켜 sum을 뺀다.
+        //left와 right가 같아질 때까지 반복한다.
+        int left = 1;
+        int right = 1;
+        int sum = 0;
+        while(left <= right && left <= n){
+            if(sum == n) 
+            {
+                counter++; 
+                sum-=left++;
             }
-            if(sum < target){
-                q.add(num);
-                sum+=num++;
+            else if(sum < n){
+                sum+=right++;
+            }
+            else{
+                sum-=left++;
             }
         }
-
-
-        return answer;
-
+            return counter;
+        
     }
-
 }
