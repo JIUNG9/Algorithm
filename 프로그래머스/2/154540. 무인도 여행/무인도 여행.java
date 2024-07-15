@@ -15,14 +15,14 @@ class Solution {
                 char c = maps[i].charAt(j);
                 if(c!='X' && !visited[i][j]){
                     int counter = 0;
-                    Queue<Person> q = new LinkedList<>(); 
+                    Queue<Location> q = new LinkedList<>(); 
                     counter+=Character.getNumericValue(maps[i].charAt(j));
-                    q.add(new Person(0,new Location(i,j)));
+                    q.add(new Location(i,j));
                     visited[i][j] = true;
 
                     while(!q.isEmpty()){
-                        Person person = q.poll();
-                        Location l = person.location;
+                        
+                        Location l = q.poll();
 
                         for(int[] m : move){
                             int y = l.y + m[0];
@@ -30,8 +30,7 @@ class Solution {
                             if(rangeCheck(y,x,len,width) && !visited[y][x] && maps[y].charAt(x) !='X'){
                                 visited[y][x] = true;
                                 counter+=Character.getNumericValue(maps[y].charAt(x));
-                                Person newP = new Person(0,new Location(y,x));
-                                q.add(newP);    
+                                q.add(new Location(y,x));    
                             }
                         }
                     }
@@ -50,15 +49,7 @@ class Solution {
         if(x >= 0 && y >= 0 && x < width && y < len) return true;
         return false;
     }
-     class Person{
-        private int stayNight;
-        private Location location;
-         
-        public Person(int stayNight, Location location){
-            this.stayNight = stayNight;
-            this.location = location;
-        }
-    }
+
      class Location{
         int y;
         int x;
