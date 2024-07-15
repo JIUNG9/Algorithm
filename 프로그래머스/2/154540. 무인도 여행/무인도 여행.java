@@ -1,64 +1,70 @@
 import java.util.*;
-
 class Solution {
-    private int[][] move = new int[][] {{1,0},{0,1},{-1,0},{0,-1}};
+    private List<Integer> answerList;
+    private boolean[][] visited;
+    private int[][] move = {{1,0},{0,1},{-1,0},{0,-1}};
     public int[] solution(String[] maps) {
-        List<Integer> list = new ArrayList<>();
-        Queue<Position> q = new LinkedList<>();
-        int length = maps.length;
+        int len = maps.length;
         int width = maps[0].length();
-        boolean[][] visited = new boolean[length][width];
+        visited = new boolean[len][width];
+        answerList = new ArrayList<>();
         
-        for(int i = 0; i < length; i++){
+        for(int i = 0; i < len; i++)
+        {
             for(int j = 0; j < width; j++){
                 char c = maps[i].charAt(j);
-                if(c !='X' && !visited[i][j]){
-                    int sum = Character.getNumericValue(c);
-                    q.add(new Position(j,i));
+                if(c!='X' && !visited[i][j]){
+                    int counter = 0;
+                    Queue<Person> q = new LinkedList<>(); 
+                    counter+=Character.getNumericValue(maps[i].charAt(j));
+                    q.add(new Person(0,new Location(i,j)));
                     visited[i][j] = true;
-                    
+
                     while(!q.isEmpty()){
-                        Position p = q.poll();
-                        
-                        int currentX = p.x;
-                        int currentY = p.y;
-                        
+                        Person person = q.poll();
+                        Location l = person.location;
+
                         for(int[] m : move){
-                            int movedPositionX = p.x + m[0];
-                            int movedPositionY = p.y + m[1];
-                            if(movedPositionX >= 0 && movedPositionY >=0 && movedPositionX < width &&  movedPositionY < length && !visited[movedPositionY][movedPositionX]){
-                                char characterValue = maps[movedPositionY].charAt(movedPositionX);
-                                if(characterValue!='X'){
-                                sum+=Character.getNumericValue(maps[movedPositionY].charAt(movedPositionX));
-                                q.add(new Position(movedPositionX,movedPositionY));
-                                visited[movedPositionY][movedPositionX] = true;
-                                }
+                            int y = l.y + m[0];
+                            int x = l.x + m[1];
+                            if(rangeCheck(y,x,len,width) && !visited[y][x] && maps[y].charAt(x) !='X'){
+                                visited[y][x] = true;
+                                counter+=Character.getNumericValue(maps[y].charAt(x));
+                                Person newP = new Person(0,new Location(y,x));
+                                q.add(newP);    
                             }
                         }
                     }
-                    list.add(sum);
+                    answerList.add(counter);
                 }
             }
-        }
-        if(list.size()==0) return new int[]{-1};
-        return list.stream().sorted().mapToInt(i->i).toArray();
+                    
+        }    
+        if(answerList.size()==0) return new int[]{-1};
+        return answerList.stream().sorted().mapToInt(i->i).toArray();
         
-        
-        
+    
     }
     
-    class Position{
-        int x;
+    public boolean rangeCheck(int y,int x ,int len, int width){
+        if(x >= 0 && y >= 0 && x < width && y < len) return true;
+        return false;
+    }
+     class Person{
+        private int stayNight;
+        private Location location;
+         
+        public Person(int stayNight, Location location){
+            this.stayNight = stayNight;
+            this.location = location;
+        }
+    }
+     class Location{
         int y;
-        public Position(int x, int y){
+        int x;
+        public Location(int y, int x){
             this.x = x;
             this.y = y;
-        }
-        public int getX(){
-            return this.x;
-        }
-        public int getY(){
-            return this.y;
         }
         
     }
