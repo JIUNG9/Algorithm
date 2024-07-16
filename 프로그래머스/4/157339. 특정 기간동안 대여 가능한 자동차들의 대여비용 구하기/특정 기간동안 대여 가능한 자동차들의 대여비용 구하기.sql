@@ -1,25 +1,21 @@
-# 11월간 대여불가능한 차량 확인
-WITH not_available AS (
-    SELECT DISTINCT CAR_ID
-    FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
-    WHERE START_DATE <= '2022-11-01'
-    AND END_DATE >= '2022-11-01'
+-- 코드를 입력하세요
+with get_specific_type as (
+    select car_id, car_type, daily_fee
+    from  car_rental_company_car
+    where car_type like "세단" OR car_type like "SUV"
+)
+, filter_date as (
+    select car_id
+    from car_rental_company_rental_history
+    where END_DATE >= '2022-11-01'
 )
 
-# 특정차량 30일 할인율 확인
-, sub_discount AS (
-    SELECT *
-    FROM CAR_RENTAL_COMPANY_DISCOUNT_PLAN
-    WHERE CAR_TYPE IN ('세단','SUV')
-    AND DURATION_TYPE = '30일 이상'
-)
+# select *
+# from filter_date
 
-SELECT CAR_ID, c.CAR_TYPE
-    , ROUND (DAILY_FEE * 30 * (1-DISCOUNT_RATE/100),0) FEE
-FROM CAR_RENTAL_COMPANY_CAR c
-JOIN sub_discount d ON c.CAR_TYPE = d.CAR_TYPE
-WHERE c.CAR_TYPE IN ('세단','SUV') 
-AND CAR_ID NOT IN (SELECT CAR_ID FROM not_available) #11월간 대여 가능
-GROUP BY CAR_ID
-HAVING FEE BETWEEN 500000 AND 2000000
-ORDER BY FEE DESC, CAR_TYPE ASC, CAR_ID DESC
+
+select a.car_id, a.car_type, round(daily_fee * (1-(discount_rate* 0.01)),0) * 30 as fee
+from get_specific_type as a inner join CAR_RENTAL_COMPANY_DISCOUNT_PLAN as b on a.car_type = b.car_type
+where duration_type like "30%" AND car_id NOT IN(select car_id from filter_date)
+having fee >= 500000 AND fee < 2000000
+order by fee desc, a.car_type asc, a.car_id desc
