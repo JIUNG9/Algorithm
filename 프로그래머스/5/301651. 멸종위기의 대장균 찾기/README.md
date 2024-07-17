@@ -3,8 +3,7 @@
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/301651) 
 
 ### Approach
-- logical : The init data which parent id is null should be 1 generation. and get the generation with id by the data which is from the last result of generation and id matched ecoli_data parent_id until there is no generation anymore.
-and get the data which has no parent_id. With that data group by the generation and get count of the each of generation which has no parent_id.
+- logical : The init data which parent id is null should be 1 generation.
 
 
 ``` sql
