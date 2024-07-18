@@ -3,36 +3,10 @@
 [문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/301651) 
 
 ### Approach
-- logical : The init data which parent id is null should be 1 generation.
+-Logical: Get the parent_id and genration through joining with parent's id and child's parent_id, through the data which have genration and parent's id, get the parent_id and counter which the number of parent doesn't have the child by the generation.
 
-
-``` sql
-with recursive cte as(
-//init
-select id, 1 as gen
-from ecoli_data
-where parent_id is null
-
-union all
-//recursive
-select id, gen+1 as gen
-from cte as c inner join ecoli_data as e c.id = ecoli_data.parent_id
-)
-
-, get_has_parent as(
-select e.parent_id
-from cte as c inner join ecoli_data as e on e.parent_id = c.id
-)
-
-select count(*), gen
-from cte
-where id not in (select parent_id as id from get_has_parent)
-group by gen
-order by gen
-
-
-
-```
+- Impl: 
+and use the not null keyword at where clause. because when there is the null value there is no way to be sure that the null value is not the value should be tested
 
 
 > 출처: 프로그래머스 코딩 테스트 연습, https://school.programmers.co.kr/learn/challenges
