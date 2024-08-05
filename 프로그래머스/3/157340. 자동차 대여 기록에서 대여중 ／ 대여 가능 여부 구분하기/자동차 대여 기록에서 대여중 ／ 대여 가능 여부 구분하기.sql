@@ -1,5 +1,5 @@
 WITH rented AS (
-    SELECT DISTINCT car_id
+    SELECT car_id
     FROM car_rental_company_rental_history
     WHERE '2022-10-16' BETWEEN start_date AND end_date
         OR end_date = '2022-10-16'
@@ -10,7 +10,7 @@ FROM rented
 
 UNION
 
-SELECT DISTINCT car_id, '대여 가능' AS AVAILABILITY
+SELECT  car_id, '대여 가능' AS AVAILABILITY
 FROM car_rental_company_rental_history
 WHERE car_id NOT IN (SELECT car_id FROM rented)
 
