@@ -42,17 +42,18 @@ class Solution {
                 unionCount+=max;  
             }
             else{
-                unionCount+=map1.get(key);
+                unionCount++;
             }
         }
         
         for(String secodnKey : keySet2){
-            if(!keySet1.contains(secodnKey)) unionCount+=map2.get(secodnKey);
+            if(!keySet1.contains(secodnKey)) unionCount++;
             
         }
 
         
-        return intersectionCount == 0 && unionCount == 0 ? 1 : (float)((float)intersectionCount / (float)unionCount);
+        
+        return intersectionCount != 0 ? (float)((float)intersectionCount / (float)unionCount): 1 ;
         
     }
 
