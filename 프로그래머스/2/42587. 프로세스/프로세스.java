@@ -1,50 +1,60 @@
 import java.util.*;
-import java.util.stream.*;
-
 class Solution {
-public int solution(int[] p, int l) {
-    int len = p.length;
-    int counter = 0;
-    Queue<int[]> q = new LinkedList<>();
-    List<Integer> maxDESC = getDESCPrioirty(p);
-    int idx = 0;
-    int max = maxDESC.get(idx);
+    
+    private int counter = 0;
+    private Queue<Task> tasks;
+    private Queue<Integer> q;
 
-    for (int i = 0; i < len; i++) {
-      q.add(new int[]{i, p[i]});
-    }
 
-    while(!q.isEmpty()){
-      int[] polled = q.poll();
-      int alpha = polled[0];
-      int priority = polled[1];
+  public int solution(int[] priorities, int location) {
 
-      if (alpha == l && priority == max) {
+    tasks = new LinkedList<>();
+    q = new PriorityQueue<>(Collections.reverseOrder());
+    init(priorities);
+
+    while (!q.isEmpty() && !tasks.isEmpty()) {
+      Task task = tasks.poll();
+      if (task.idx == location && task.priority == q.peek()) {
         counter++;
         break;
+      } else if (task.priority == q.peek()) {
+        counter++;
+        q.poll();
+      } else {
+        tasks.add(new Task(task.idx, task.priority));
       }
-        if (priority != max) {
-          q.add(polled);
-        } else {
-          counter++;
-          idx++;
-          max = maxDESC.get(idx);
-        }
-      }
-
-
+    }
     return counter;
+
+  }
+
+  public void init(int[] priorities) {
+    int len = priorities.length;
+
+    for (int i = 0; i < len; i++){
+      Task task = new Task(i, priorities[i]);
+      q.add(priorities[i]);
+      tasks.add(task);
+    }
+
+  }
+
+}
+
+class Task {
+
+
+  int idx;
+  int priority;
+
+  public Task(int idx, int priority) {
+    this.idx = idx;
+    this.priority = priority;
+  }
+
+  public String toString() {
+    return "this idx : " + idx + " ," + "this priority : " + priority;
 
 
   }
-    public List<Integer> getDESCPrioirty(int[] p) {
-        List<Integer> list = new ArrayList<>();
-        int len = p.length;
-        for(int i =0; i < len; i ++){
-            list.add(p[i]);
-        }
-        return list.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
-    }
-    
-    
 }
