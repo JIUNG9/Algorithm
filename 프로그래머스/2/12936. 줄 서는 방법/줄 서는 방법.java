@@ -1,34 +1,30 @@
 import java.util.*;
 
 class Solution {
-
     public int[] solution(int n, long k) {
+        k--; 
         int[] answer = new int[n];
-        long temp = k - 1;
-        ArrayList<Integer> list = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        
+    
         for (int i = 1; i <= n; i++) {
             list.add(i);
         }
-        for (int i = 0; i < n; i++) {
-            if (temp == 0) {
-                answer[i] = list.get(0);
-                list.remove(0);
-                continue;
-            }
-            long num = temp / factorial(n - i - 1);
-            answer[i] = list.get((int)num);
-            list.remove((int)num);
-            temp = temp % factorial(n - i - 1);
-        }
-
-        return answer;
-    }
-
-    public long factorial(int n) {
-        long result = 1;
+    
+        long[] factorial = new long[n + 1];
+        factorial[0] = 1;
         for (int i = 1; i <= n; i++) {
-            result *= i;
+            factorial[i] = factorial[i - 1] * i;
         }
-        return result;
+        
+
+        for (int i = 0; i < n; i++) {
+            long fact = factorial[n - 1 - i];
+            int index = (int) (k / fact); 
+            answer[i] = list.remove(index); 
+            k %= fact;
+        }
+        
+        return answer;
     }
 }
