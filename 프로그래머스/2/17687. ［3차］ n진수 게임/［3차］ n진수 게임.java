@@ -1,59 +1,30 @@
 import java.util.*;
-class Solution {    
+class Solution {
+
+private String[] numbersStr = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
+    
     public String solution(int n, int t, int m, int p) {
-        
-        String s ="";
-        String answer ="";
-        int i = 0;
-        while(s.length() < t * m){
-             String str = getInputRadixString(n,i);
-            // System.out.println("str:" + str);
-            i++;
-            s = s.concat(str);
-            // System.out.println("s:" + s);
+        StringBuilder sequence = new StringBuilder();
+        for (int i = 0; sequence.length() < t * m; i++) {
+            sequence.append(convertToNotation(n, i));
         }
-        
-        int j = 0;
-        while(answer.length() < t){
-            answer = answer.concat(String.valueOf(s.charAt((p-1) + m * j)));
-            j++;
+
+        StringBuilder result = new StringBuilder();
+        for (int i = p - 1; result.length() < t; i+= m) {
+            result.append(sequence.charAt(i));
         }
-            return answer;
-            
+
+        return result.toString();
     }
-    public String getInputRadixString(int radix, int i){
-            if(i == 0) return "0";
-            StringBuilder sb = new StringBuilder();
-                while(i > 0){
-                    int value = i % radix;
-                    if(value == 10) sb.append("A");
-                    else if(value == 11) sb.append("B");
-                    else if(value == 12) sb.append("C");
-                    else if(value == 13) sb.append("D");
-                    else if(value == 14) sb.append("E");
-                    else if(value == 15) sb.append("F");
-                    else{
-                        sb.append(value);
-                    }
-                    
-                    i/=radix;
-                    
-                    
-        }
-    
-        return sb.reverse().toString();
-        
-        
-    }
-    public String getInputRadixStringWhenUnder10(int radix, int i){
-        if(i == 0) return "0";
+
+    private String convertToNotation(int notation, int number) {
         StringBuilder sb = new StringBuilder();
-        while(i > 0){
-            sb.append(i%radix);
-            i/=radix;
+        if (number == 0) return "0";
+        while (number > 0) {
+            sb.append(numbersStr[number % notation]);
+            number /= notation;
         }
-    
         return sb.reverse().toString();
-        
     }
+
 }
