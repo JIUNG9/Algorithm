@@ -1,9 +1,11 @@
--- 코드를 입력하세요
--- Domain: Online sale에는 같은 회원의 아이디가 여러개 존재할 수 있다. 다만 동일한 날짜 회원 ID, 상품 ID는 한 개가 존재한다.
--- Impl : 년, 월, 성별로 상품을 구매한 회원 수를 구할 때, 같은 년와 월에 같은 회원의 ID는 제외되어야한다. 구매한 횟수가 아니기 때문이다. 따라서 distinct를 통하여 회원을 ㅈ집계한다.
+-- 
+-- year과 month로 집계하여 유저의 아이디가 중복되는 것을 필터링한 데이터를 기준으로 유저의 성별을 구하여, 해당 데이터의 성별이 존재하는 유저의 데이터를 연도, 월, 성별 별로 유저의 인원수를 구하여 집계 이후 년, 월, 성별을 기준으로 ASC 정렬
 
-select year(sales_date)as year,month(sales_date) as month, gender, count(distinct os.user_id) as users
-from user_info as ui inner join online_sale as os on ui.user_id = os.user_id
-where gender is not null
+
+
+
+select year(sales_date) as year, month(sales_date) as month, gender ,count(distinct os.user_id) as users
+from online_sale os inner join user_info ui on os.user_id = ui.user_id
+where ui.gender is not null
 group by 1,2,3
 order by 1,2,3
