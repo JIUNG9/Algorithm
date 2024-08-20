@@ -1,52 +1,42 @@
-import java.util.*;
-import java.util.stream.*;
 class Solution {
-    
+    //구현 방법: 잘랐다는 것을 다시 remove한 후 add한 다면 위치가 달라짐
     private boolean[] visited;
-    private List<int[]> list;
-    private int connectedLen = 0;
+    private int connectedWire = 0;
     private int answer = Integer.MAX_VALUE;
     
-    public int solution(int n, int[][] wires) {
-        list = Arrays.stream(wires).collect(Collectors.toList());
-        
-        for(int i = 0; i < wires.length; i++){
-            
-            
-            visited = new boolean[wires.length-1];
-            int[] cutNode = wires[i];
-            list.remove(cutNode);
-            
-            connectedLen = 1;
-            visited[0] = true;
-            
+    public int solution(int n, int[][] w) {
+    
+    
+        for(int i = 0; i < w.length; i++){
+            int startNode;
+            if(i == 0) startNode = w[1][0];
+            else startNode = w[0][0];
+            connectedWire = 0;
+            visited = new boolean[w.length];
+            dfs(startNode, i,w);
+            int connectedNode =  connectedWire + 1;
+            int anotherPartNode = n - connectedNode;
+            int difference = Math.abs(connectedNode - anotherPartNode); 
 
-            dfs(list.get(0)[1]);
-            dfs(list.get(0)[0]);
-            
-            answer = Math.min(Math.abs((connectedLen+1) - (n-(connectedLen+1))),answer);
-            list.add(cutNode);
+            answer = Math.min(answer, difference);
         }
+        
         return answer;
-        
-        
     }
-    public void dfs(int endNode){
-        for(int i = 0 ; i < list.size(); i++){
-            if(!visited[i] && endNode == list.get(i)[0]){
-                connectedLen++;
+    
+    
+    
+    public void dfs(int node, int cutWire, int[][] w){
+        for(int i = 0; i < w.length; i++){
+            int startNode = w[i][0];
+            int endNode = w[i][1];
+            if(cutWire == i) continue;
+            if(!visited[i] && (node == startNode || node == endNode)){
+                connectedWire++;
                 visited[i] = true;
-                dfs(list.get(i)[1]);
-                visited[i] = false;
+                dfs(startNode, cutWire, w);
+                dfs(endNode, cutWire, w);
             }
-            else if(!visited[i] && endNode == list.get(i)[1]){
-                connectedLen++;
-                visited[i] = true;
-                dfs(list.get(i)[0]);
-                visited[i] = false;
-            
-            }
-            
         }
     }
 }
