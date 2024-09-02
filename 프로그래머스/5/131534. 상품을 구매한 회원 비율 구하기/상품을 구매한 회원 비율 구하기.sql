@@ -9,7 +9,10 @@ with get_the_number_user_sign_up_2021 as (
     where year(joined) like '2021'
 )
 
-select year(sales_date)as YEAR, month(sales_date)as MONTH , count(distinct os.user_id) as PURCHASED_USERS, round(count(distinct os.user_id) /(select count(*) from get_the_number_user_sign_up_2021),1)as PUCHASED_RATIO
+-- see the difference between two of that  round(count(distinct os.user_id) /count(us.user_id),1)as PUCHASED_RATIO vs  round(count(distinct os.user_id) /(select count(user_id) from get_the_number_user_sign_up_2021) ,1) as PUCHASED_RATIO. The first one means the number of the user which buy the products at 2021 which is grouped by the year and month. otherwsie second one is not. Just the number of user who signed up at 2021
+
+
+select year(sales_date)as YEAR, month(sales_date)as MONTH , count(distinct os.user_id) as PURCHASED_USERS, round(count(distinct os.user_id) /(select count(user_id) from get_the_number_user_sign_up_2021),1)as PUCHASED_RATIO
 from  get_the_number_user_sign_up_2021 as us inner join online_sale as os on us.user_id = os.user_id
 group by 1,2
 order by 1,2
