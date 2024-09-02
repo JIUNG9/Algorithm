@@ -1,23 +1,30 @@
 -- 코드를 입력하세요
-with sign_up_at_2021 as (
+-- Domain: Online Sale에는 같은 유저 아이디가 존재할 수 있다.
+-- 2021년에 가입한 전체의 유저의 회원 아이디를 기준으로 구매한 유저의 수와 2021년의 가입한 전체 회원의 수와 구매한 사람의 비율을 구하여라 online sale에 존재하는 유저 아이디가 여러 개라면 한 개만 포함하여 고려한다.비율은 소수 두 번째 자리에서 반올림하고 년 별, 월 별을 구하고 년, 월 기준으로 오름차순한다.
 
-    select *
+
+with get_the_number_user_sign_up_2021 as (
+    select user_id
     from user_info
-    where year(joined) = 2021
+    where year(joined) like '2021'
 )
 
-, count_2021 as (
-    select count(*) as cnt
-    from user_info
-    where year(joined) = 2021
-)
-
-select year(sales_date) as year, month(sales_date) as month, count(distinct su.user_id)  as purchased_users, round((count(distinct su.user_id)/cnt) ,1) as puchased_ratio
-from sign_up_at_2021 as su inner join online_sale as os on os.user_id = su.user_id, count_2021
-group by 1, 2
-order by 1,2 
-
-# select count(distinct su.user_id)
-#  from sign_up_at_2021 as su inner join online_sale as os on os.user_id = su.user_id, count_2021
+select year(sales_date)as YEAR, month(sales_date)as MONTH , count(distinct os.user_id) as PURCHASED_USERS, round(count(distinct os.user_id) /(select count(*) from get_the_number_user_sign_up_2021),1)as PUCHASED_RATIO
+from  get_the_number_user_sign_up_2021 as us inner join online_sale as os on us.user_id = os.user_id
+group by 1,2
+order by 1,2
 
 
+# WITH JOINED2021 AS (
+#     SELECT  *
+#     FROM    USER_INFO
+#     WHERE   YEAR(JOINED) = '2021'
+# )
+
+# SELECT      YEAR(B.SALES_DATE) YEAR, MONTH(B.SALES_DATE) MONTH,
+#             COUNT(DISTINCT B.USER_ID) PURCHASED_USERS,
+#             ROUND(COUNT(DISTINCT B.USER_ID) / (SELECT COUNT(*) FROM JOINED2021), 1) PURCHASED_RATIO
+# FROM        JOINED2021 A
+# INNER JOIN  ONLINE_SALE B ON A.USER_ID = B.USER_ID
+# GROUP BY    YEAR, MONTH
+# ORDER BY    YEAR, MONTH
