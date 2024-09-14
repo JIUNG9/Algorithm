@@ -9,7 +9,6 @@ class Solution {
         //즉 병사를 사용하다 더 이상 막아낼 수 없을 때 이전에 처리했던 가장 큰 인원수의 병력을 무적권을 사용하여 처리하는 것이 가장 최적의 해를 보장한다.
         //구현 방법: PQ를 사용한다.
         int len = enemy.length;
-        int counter = 0;
         int i = 0;
         
         PriorityQueue<Integer> q = new PriorityQueue<>(Collections.reverseOrder());
@@ -22,16 +21,14 @@ class Solution {
                 n-=enemy[i];
                 q.add(enemy[i]);
                 i++;
-                counter++;
             }
             //현재는 막을 수 없는 상태 따라서 무적권이 존재한다면 
             if(i < len && k > 0){
                 //이전에 처리했던 가장 큰 값을 무적권을 사용하여 현재 적을 처리할 수 있게 함
                 if(q.size() > 0){
-                    //edge case 
+                    //edge case -> 현재 처리할 것이 큐에 있는 것 보다 크다면 현재 값을 처리한다.
                     if(enemy[i] > q.peek()){
                         i++;
-                        counter++;
                     }
                     else{
                         n+=q.poll();     
@@ -43,14 +40,13 @@ class Solution {
                 else{
                     k--;
                     i++;
-                    counter++;
                 }
                 
             }
             
         }
             
-            return counter;
+            return i;
         }
         
         
