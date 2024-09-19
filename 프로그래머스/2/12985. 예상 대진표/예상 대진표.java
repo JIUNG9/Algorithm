@@ -1,35 +1,32 @@
 class Solution
 {
-    private int small;
-    private int big;
-    private int counter = 0;
     public int solution(int n, int a, int b)
     {
-        
-        assignTheSmallAndBig(a,b);
+        int answer = 0;
 
-        while(!(small%2==1 && big %2 ==0 && big - small == 1)){
+        // [실행] 버튼을 누르면 출력 값을 볼 수 있습니다.
+        int counter = 0;
+        while(a != b){
+            if(a%2==1){
+                a/=2;
+                a++;
+            }
+            else{
+                a/=2;
+            }
+            if(b%2==1){
+                b/=2;
+                b++;
+            }
+            else{
+                b/=2;
+            }
             counter++;
-            small = updateToNext(small);
-            big = updateToNext(big);
+
+
         }
-            return counter+1;
+
         
+        return counter;
     }
-    
-    public int updateToNext(int i){
-        return i%2==1 ? i/2+1 : i/2;
-    }
-    public void assignTheSmallAndBig(int a, int b){
-        if(a > b){
-            big = a;
-            small = b;
-        }
-        else{
-            small = a;
-            big = b;
-        }
-        
-    }
-    
 }
