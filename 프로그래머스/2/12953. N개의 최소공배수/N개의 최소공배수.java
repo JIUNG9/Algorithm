@@ -7,6 +7,7 @@ class Solution {
         for(int i = 1; i < arr.length; i++){
             //최소공배수
             //두 수의 공약수들 중 가장 큰 수를 얻어 arr의 원소들을 나눈 값과 공약수들 중 가장 큰 값을 구한다.
+            //2번 째 comment의 의미는 GCD를 의미한다.
             List<Integer> cdList = getCD(arr[i-1], arr[i]);
             int lcd = cdList.get(cdList.size()-1);    
             
@@ -22,7 +23,6 @@ class Solution {
         for(int i = 1; i <= min ; i++){
             if(min%i == 0 && max % i == 0)
             {
-                System.out.println("cd: " + i);
                 cd.add(i);
             }
         }
