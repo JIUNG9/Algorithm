@@ -1,70 +1,43 @@
 import java.util.*;
 class Solution {
-    
-   public int solution(int cacheSize, String[] cities) {
+    public int solution(int cacheSize, String[] c) {
+        //cache에 cache사이즈 만큼 존재하지 않는다면 5을 소모하고 캐쉬에 인풋, 이때 이미 캐쉬가 존재한다면 +1
+        //cache 사이즈만큼 캐쉬가 존재하는데 캐쉬가 존재하지 않는다면
+        //가장 오래된 캐쉬를 꺼낸 다음 가장 fresh하게 저장(앞에 것을 poll한 이후 뒤에 push) 이후 + 5
+        //cache 사이즈만큼 캐쉬가 존재하는데 해당 캐쉬가 존재하는 경우
+        //해당 캐쉬를 꺼낸 다음 가장 fresh하게 뒷 부분에 푸쉬 +1
+        //** 대소문자를 가리지 않는다.
+        
+        int answer = 0;
+        
+        
+        
+        
+        for(int j = 0; j < c.length; j++){
+            c[j] = c[j].toUpperCase();
+        }
+        
+        
+        LinkedList<String> list = new LinkedList<>();
+        for(int i = 0; i < c.length; i++){
 
-    List<String> list = new ArrayList<>();
-    initAsLowerCase(cities);
-    int len = cities.length;
-    int answer = 0;
-
-    if (cacheSize == 0) {
-      return 5 * cities.length;
+                if(list.contains(c[i])){
+                    list.remove(c[i]);
+                    list.add(c[i]);
+                    answer+=1;
+                }
+                else{
+                    list.add(c[i]);    
+                    answer+=5;
+                }
+                while(list.size() > cacheSize){
+                    list.pollFirst();
+                }
+            }
+           
+        
+        return answer;
+        
+        
     }
-
-    for (int i = 0; i < len; i++) {
-      String s = cities[i];
-
-      if(list.size() < cacheSize) {
-        answer+=initCache(list,s);
-      }
-      else if (isCachedHit(s, list)) {
-        answer++;
-        cacheHit(s, list);
-      } else {
-        answer += 5;
-        nonCacheHit(s, list);
-      }
-    }
-    return answer;
-
-  }
-
-
-   public int initCache(List<String> list, String s) {
-    if(list.contains(s)) {
-      list.remove(s);
-      list.add(s);
-      return 1;
-    }
-    else{
-      list.add(s);
-      return 5;
-    }
-  }
-
-
-  
-
-  public void initAsLowerCase(String[] cities) {
-    int len = cities.length;
-    for (int i = 0; i < len; i++) {
-     cities[i] =  cities[i].toLowerCase();
-    }
-
-  }
-
-  public boolean isCachedHit(String s, List<String> list) {
-    return list.contains(s);
-  }
-
-  public void cacheHit(String s, List<String> cached) {
-    cached.remove(s);
-    cached.add(s);
-  }
-
-  public void nonCacheHit(String s, List<String> cached) {
-    cached.remove(0);
-    cached.add(s);
-  }
 }
