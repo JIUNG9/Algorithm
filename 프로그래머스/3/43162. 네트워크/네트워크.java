@@ -26,6 +26,7 @@ class Solution {
         for(int i = 0; i < visited.length; i++){
             if(!visited[i]) counter++;
         }
+        if(answer == 0) return counter;
         return counter+answer;
 
     }
@@ -34,7 +35,6 @@ class Solution {
                 if((c[i][target] == 1 || c[target][i] == 1) && !visited[i]){
                     visited[i] = true;
                     dfs(i,c);
-                    dfs(target,c);
         }
     }
 }
