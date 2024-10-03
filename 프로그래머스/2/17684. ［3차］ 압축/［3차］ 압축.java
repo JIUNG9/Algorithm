@@ -1,62 +1,43 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 
 class Solution {
-  private List<Integer> answerList;
-  private Map<String, Integer> map;
-  private int sequence = 1;
-
-//   public static void main(String[] args) {
-
-//     압축 g = new 압축();
-
-//     int[] arr = g.solution("KAKAO");
-//     for (Integer i : arr) {
-//       System.out.println(i);
-//     }
-//   }
-
- public int[] solution(String msg) {
-    //range check => should do the range check in here
-    int len = msg.length();
-    int i = 0;
-    map = new HashMap<>();
-    answerList = new ArrayList<>();
-    makePreDefinedTable();
-
-    while (i < len) {
-      String current = msg.substring(i, i + 1);
-      String temp = msg.substring(i, i + 1);
-      while (map.containsKey(current)) {
-        i++;
-        if (i + 1  > len) {
-          break;
+    public int[] solution(String msg) {
+        // Initialize the dictionary
+        Map<String, Integer> dict = new HashMap<>();
+        List<Integer> answerList = new ArrayList<>();
+        int dictSize = 26;
+        
+        // Initialize dictionary with single characters A-Z
+        for (int i = 1; i <= 26; i++) {
+            dict.put(String.valueOf((char) (i + 64)), i);  // A=1, B=2, ..., Z=26
         }
-        temp = current;
-        current = current.concat(msg.substring(i, i + 1));
-      }
-      if(!map.containsKey(current)){
-        map.put(current,sequence++);
-        answerList.add(map.get(temp));
-      }
-      else{
-        answerList.add(map.get(current));
-      }
+        
+        int idx = 0;
+        int len = msg.length();
+        
+        while (idx < len) {
+            String pat = String.valueOf(msg.charAt(idx));  // Start with a single character
+            int nextIdx = idx + 1;
+            
+            // Expand `pat` while it's in the dictionary
+            while (nextIdx < len && dict.containsKey(pat + msg.charAt(nextIdx))) {
+                pat += msg.charAt(nextIdx);
+                nextIdx++;
+            }
+            
+            // Add the index of the found string to the answer list
+            answerList.add(dict.get(pat));
+            
+            // Add the new pattern `pat + next character` to the dictionary if possible
+            if (nextIdx < len) {
+                dict.put(pat + msg.charAt(nextIdx), ++dictSize);
+            }
+            
+            // Move to the next character (beyond the current pattern)
+            idx = nextIdx;
+        }
+        
+        // Convert the answer list to an array and return
+        return answerList.stream().mapToInt(i -> i).toArray();
     }
-    return answerList.stream().mapToInt(integer -> integer).toArray();
-  }
-
-  public void makePreDefinedTable() {
-    Character[] upperCaseAlphabet = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
-        'M',
-        'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
-    for (Character c : upperCaseAlphabet) {
-      map.put(String.valueOf(c), sequence++);
-    }
-
-
-  }
 }
