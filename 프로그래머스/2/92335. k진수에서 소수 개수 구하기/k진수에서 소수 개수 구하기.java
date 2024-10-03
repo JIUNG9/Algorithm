@@ -1,40 +1,38 @@
 import java.util.*;
+import java.util.regex.*;
 
 class Solution {
+    private int answer =0;
     public int solution(int n, int k) {
-        int counter = 0;
-        List<Long> list = getNumberListByDigit(k,n);
         
-        for(Long l : list){
-            if(isPrime(l)) counter++;
-        }
-        return counter;
-    }
-    
-    public List<Long> getNumberListByDigit(int digit, int num ){
+        String str = convertToN(n,k);
+        Pattern p = Pattern.compile("([^0]+)");
+        Matcher m = p.matcher(str);
         List<Long> list = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-        while( num / digit != 0){
-            sb.append(String.valueOf(num%digit));
-            num/=digit;
-        }
-            sb.append(num%digit);
         
-        String[] criteria = sb.reverse().toString().split("0");
-        
-        for(String s: criteria){
-            if(s.equals("")) continue;
-            list.add(Long.parseLong(s));
+        while(m.find()){
+            String pat = m.group(0);
+            list.add(Long.parseLong(pat));
         }
-        return list;
+        for(int i = 0; i < list.size(); i++){
+            if(isPrime(list.get(i))) answer++;
+        }
+               return answer;
     }
     
-    public boolean isPrime(Long l){
-        if(l==1) return false;
-        if(l==2) return true;
-        for(int i = 3; i <= Math.sqrt(l); i++){
-            if(l%2 == 0) return false;
-            if(l%i == 0) return false;
+    public String convertToN(int n, int k){
+        StringBuilder sb = new StringBuilder();
+        if(n == 0) return "0";
+        while(n > 0){
+            sb.append(String.valueOf(n%k));
+            n/=k;
+        }
+        return sb.reverse().toString();
+    }
+    public boolean isPrime(long num){
+        if(num<=1) return false;
+        for(int i = 2; i <= Math.sqrt(num); i++){
+            if(num%i==0) return false;
         }
         return true;
     }
