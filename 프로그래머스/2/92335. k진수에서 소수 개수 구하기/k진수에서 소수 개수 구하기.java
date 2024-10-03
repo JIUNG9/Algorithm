@@ -4,6 +4,9 @@ import java.util.regex.*;
 class Solution {
     private int answer =0;
     public int solution(int n, int k) {
+        //문제 풀이 0P0, P0, 0P, P를 표현할 수 있는 정규식을 찾아야한다.
+        //4개의 모든 경우는 0을 제외하고 표현되는 소수여야한다. 따라서 맨 앞의 0을 제외한 연속된 숫자의 연속적인 그룹핑은 0P, 0P0, 0P를 표현하고 0이 없다면 P를 표현할 수 있다.
+        //1,000,000를 2진수로 표현하면 21억 즉 Integer의 범위를 벗어난다. 따라서 Long으로 형전환을 해야한다.
         
         String str = convertToN(n,k);
         Pattern p = Pattern.compile("([^0]+)");
