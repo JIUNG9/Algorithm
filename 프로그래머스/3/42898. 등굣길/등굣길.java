@@ -1,38 +1,35 @@
 class Solution {
-public int solution(int m, int n, int[][] puddles) {
-    // declare the padding array
-    // init the puddle as -1
-
-    int[][] dp = new int[n+1][m+1];
-    int xLen = m+1;
-    int yLen = n+1;
-
-
-
-    for (int i = 1; i < xLen; i++) {
-      dp[1][i] = 1;
-    }
-    for (int j = 1; j < yLen; j++) {
-      dp[j][1] = 1;
-    }
-    for (int[] p : puddles) {
-      int x = p[0];
-      int y = p[1];
-      dp[y][x] = -1;
-    }
-
-    for (int i = 1; i < yLen; i++) {
-      for (int j = 1; j < xLen; j++) {
-        if (i == 1 && j == 1) {
-          continue;
+    public int solution(int m, int n, int[][] puddles) {
+        int[][] dp = new int[n+1][m+1];
+        boolean[][] isPuddle = new boolean[n+1][m+1];
+        initPuddle(isPuddle, puddles);
+        
+        for (int i = 1; i < n + 1; i++) {
+            if (isPuddle[i][1]) break;
+            dp[i][1] = 1;
         }
-        if (dp[i][j] == -1) {
-          dp[i][j] = 0;
-        } else {
-          dp[i][j] = (dp[i - 1][j] + dp[i][j - 1])%1000000007;
+        for (int j = 1; j < m + 1; j++) {
+            if (isPuddle[1][j]) break;
+            dp[1][j] = 1;
         }
-      }
+
+        for (int y = 1; y < dp.length; y++) {
+            for (int x = 1; x < dp[0].length; x++) {
+                if (x == 1 && y == 1) continue; 
+                if (!isPuddle[y][x]) {
+                    dp[y][x] = (dp[y-1][x] + dp[y][x-1]) % 1000000007;
+                }
+            }
+        }
+        
+        return dp[n][m];
     }
-    return dp[yLen - 1][xLen - 1];
-  }
+    
+public void initPuddle(boolean[][] isPuddle, int[][] p) {
+    for (int i = 0; i < p.length; i++) {
+        int y = p[i][1];
+        int x = p[i][0]; 
+        isPuddle[y][x] = true; 
+    }
+}
 }
