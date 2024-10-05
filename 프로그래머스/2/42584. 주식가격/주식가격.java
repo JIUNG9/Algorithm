@@ -1,41 +1,33 @@
 import java.util.*;
-import java.util.Collections;
-
 class Solution {
-    public int[] solution(int[] p) {
-        int len = p.length;
-        int[] result = new int[len];
-        PriorityQueue<Stock> q = new PriorityQueue<>((s1,s2)->{
-            return Integer.compare(s2.value, s1.value);
+    public int[] solution(int[] prices) {
+        
+        //만약 현재 초에 확인하는 주식이 이전에 저장했던 주식 기록'들'보다 가격이 떨어졌다면(항상 큰 값이 위로 와야한다. PQ DESC) 그떄의 시각과 현재 확인하는 시각의 차이를, 그때의 시각에 기록을 한다. 그리고 현재 시각의 (초) 주식을 초 단위로 기록한다.(큐에등록),  만약 변동 사항이 없다면 해당 값은 바뀌지 않았으므로 지속적으로 1초씩 증가한다.(즉 매번 가장 주식의 가격이 작을 때를 확인하여, 현재 확인하는 것과 비교하고 '이전' 것들 또한 비교한다. )
+        
+        int len = prices.length;
+        int[] answer = new int[len];
+        PriorityQueue<int[]> pq = new PriorityQueue<>((arr1,arr2)->{
+            return Integer.compare(arr2[1],arr1[1]);
         });
         
-        q.add(new Stock(0,p[0]));
-        for(int i = 1; i < len; i++){
-            while(!q.isEmpty() && q.peek().value > p[i]){
-                Stock stock = q.poll();
-                result[stock.idx] = i - stock.idx;
+        for(int i = 0; i < len; i++){
+            answer[i] = len-i-1;
+        }
+        
+        pq.add(new int[]{0,prices[0]});
+        
+        for(int j = 0; j < len; j++){
+            int current = prices[j];
+            while(!pq.isEmpty() && pq.peek()[1] > current){
+                int[] arr = pq.poll();
+                int idx = arr[0];
+                answer[idx] = j - idx;
             }
-            q.add(new Stock(i,p[i]));
+            pq.add(new int[]{j,current});
         }
+        return answer;
         
-        while(!q.isEmpty()){
-            Stock stock = q.poll();
-            result[stock.idx] = (len-1)- stock.idx;            
-        }
-        return result;
-        
-    }
-    
-    class Stock{
-        private int idx;
-        private int value;
-        
-        public Stock(int idx, int value){
-            this.idx = idx;
-            this.value =value;
-        }
         
         
     }
-    
 }
