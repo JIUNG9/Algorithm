@@ -1,17 +1,15 @@
-WITH get_rnk AS (
-    SELECT 
-        id, 
-        size_of_colony,
-        NTILE(4) OVER (ORDER BY size_of_colony DESC) as quartile
-    FROM ecoli_data
+-- 코드를 작성해주세요
+with percent_quarter as(
+    select id, ntile(4) over(order by size_of_colony desc) as quarter
+    from ecoli_data
 )
-SELECT 
-    id,
-    CASE quartile
-        WHEN 1 THEN 'CRITICAL'
-        WHEN 2 THEN 'HIGH'
-        WHEN 3 THEN 'MEDIUM'
-        ELSE 'LOW'
-    END AS colony_name
-FROM get_rnk
-ORDER BY id ASC;
+
+select p.id,
+case
+when quarter = 1 then 'CRITICAL'
+when quarter = 2 then 'HIGH'
+when quarter = 3 then 'MEDIUM'
+when quarter = 4 then 'LOW'
+end as colony_name
+from percent_quarter p inner join ecoli_data e on p.id = e.id
+order by 1 asc
