@@ -12,10 +12,9 @@ with can_not_rent as(
 select car_id, '대여중' as availability
 from can_not_rent
 
-union all
+union 
 
-select distinct car_id , '대여 가능' as availability
+select  car_id , '대여 가능' as availability
 from car_rental_company_rental_history
 where car_id not in (select car_id from can_not_rent)
 order by car_id desc
-
