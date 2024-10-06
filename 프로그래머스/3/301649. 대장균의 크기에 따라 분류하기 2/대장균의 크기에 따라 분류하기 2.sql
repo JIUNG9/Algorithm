@@ -1,15 +1,15 @@
--- 코드를 작성해주세요
-with percent_quarter as(
-    select id, ntile(4) over(order by size_of_colony desc) as quarter
+
+with get_partition as(
+    select id, ntile(4) over(order by size_of_colony desc) as part
     from ecoli_data
 )
 
-select p.id,
+select p.id, 
 case
-when quarter = 1 then 'CRITICAL'
-when quarter = 2 then 'HIGH'
-when quarter = 3 then 'MEDIUM'
-when quarter = 4 then 'LOW'
+when part = 1 then 'CRITICAL'
+when part = 2 then 'HIGH'
+when part = 3 then 'MEDIUM'
+when part = 4 then 'LOW'
 end as colony_name
-from percent_quarter p inner join ecoli_data e on p.id = e.id
+from get_partition p inner join ecoli_data e on e.id = p.id
 order by 1 asc
