@@ -1,31 +1,26 @@
-with p as(
-
-    select code
-    from skillcodes
+with get_front_dev as(
+    select id
+    from skillcodes s inner join developers d on s.code & d.skill_code
+    where category like 'Front%'
+)
+,
+c_shop_dev as(
+    select id
+    from skillcodes s inner join developers d on s.code & d.skill_code
+    where s.name like 'C#'
+)
+,get_python_dev as(
+    select id
+    from skillcodes s inner join developers d on s.code & d.skill_code
     where name like 'Python'
-    
 )
-, f as(
-    select sum(code) as code
-    from skillcodes
-    where category like "Front End"
-    group by category
-
-)
-
-, cshop as (
-    select code
-    from skillcodes
-    where name like 'C#'
-)
-
 
 select 
 case
-when skill_code & f.code AND skill_code & p.code then 'A'
-when skill_code & cshop.code then 'B'
-when skill_code & f.code then 'C'
-end as grade ,id , email
-from developers , f , p, cshop 
+when id in (select * from get_python_dev) and id in (select * from get_front_dev) then 'A'
+when id in  (select * from c_shop_dev) then 'B'
+when id in (select * from get_front_dev) then 'C'
+end as grade, id, email
+from developers d
 having grade is not null
-order by  1 asc , 2 asc 
+order by grade, id
