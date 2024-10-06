@@ -1,11 +1,8 @@
--- 
--- year과 month로 집계하여 유저의 아이디가 중복되는 것을 필터링한 데이터를 기준으로 유저의 성별을 구하여, 해당 데이터의 성별이 존재하는 유저의 데이터를 연도, 월, 성별 별로 유저의 인원수를 구하여 집계 이후 년, 월, 성별을 기준으로 ASC 정렬
+-- 코드를 입력하세요
+-- 도메인: 유저는 같은 년, 월에 여러 번 상품을 구매할 수 있어 년, 월, 성별로 집계하여도 여러 개의 row가 나올 수 있다. 
 
-
-
-
-select year(sales_date) as year, month(sales_date) as month, gender ,count(distinct os.user_id) as users
-from online_sale os inner join user_info ui on os.user_id = ui.user_id
-where ui.gender is not null
+select year(sales_date) as year, month(sales_date) as month, gender, count(distinct os.user_id) as users
+from user_info u inner join online_sale os on u.user_id = os.user_id
 group by 1,2,3
-order by 1,2,3
+having gender is not null
+order by year, month, gender
