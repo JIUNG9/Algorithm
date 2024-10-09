@@ -1,127 +1,23 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Stack;
-
+import java.util.*;
 class Solution {
-   public int solution(int[] order) {
-    SupplementBelt supplementBelt = new SupplementBelt();
-    MainBelt mainBelt = new MainBelt(1000001);
-    Loaded loaded = new Loaded();
-    int i = 0;
-    int currentShouldBeLoad = order[0];
-
-    while (mainBelt.isThereBox()) {
-
-        while (mainBelt.isThereBox() && mainBelt.currentBox() <= currentShouldBeLoad) {
-          supplementBelt.input(mainBelt.out());
+    public int solution(int[] order) {
+       //모든 택배를 실을 때까지, 현재 실어야할 택배가 컨테이너 벨트에 가장 위에 있는 택배가 더 작거나 비어있을 때, 현재 실어야할 택배보다 작은 택배들을 모두 컨테이너 벨트에 담는다. 이후 컨테이너 벨트에 존재하는 가장 위쪽의 원소와 동일하다면 정답을 하나 추가하고 컨테이너 벨트에서 한 개의 택배를 빼 트럭에 싣는다. 아니라면 현재 까지 트럭에 실었던 택배 개수를 반환한다.
+        int answer = 0;
+        int boxOrder = 1;
+        Stack<Integer> stk = new Stack<>();
+        for(int i = 0; i < order.length; i++){
+            int currentOrder = order[i];
+            while(stk.isEmpty() || stk.peek() < currentOrder){
+                stk.push(boxOrder++);
+            }
+            if(stk.peek() == currentOrder){
+                stk.pop();
+                answer++;
+            }
+            else{
+                break;
+            }
         }
-
-      while (supplementBelt.isThereBox() && supplementBelt.getRecentBox() == currentShouldBeLoad) {
-        loaded.load(supplementBelt.out());
-        i++;
-        if (i < order.length) {
-          currentShouldBeLoad = order[i];
-        }
-      }
-      if(mainBelt.currentBox() > currentShouldBeLoad){
-        if(supplementBelt.isThereBox()){
-          if(supplementBelt.getRecentBox() != currentShouldBeLoad) break;
-        }
-        else break;
-      }
-
-}
-    return loaded.totalLoaded();
-
-
-  }
-
-
-  class Loaded {
-
-    private final List<Integer> list;
-
-    public Loaded() {
-      this.list = new ArrayList<>();
+        return answer;
     }
-
-    public void load(int value) {
-      list.add(value);
-    }
-
-    public int totalLoaded() {
-      return list.size();
-
-    }
-
-  }
-
-
-  class MainBelt {
-
-    Queue<Integer> q;
-
-    public MainBelt(int size) {
-      init(size);
-    }
-
-    private void init(int size) {
-      q = new LinkedList<>();
-      for (int i = 1; i <= size; i++) {
-        q.add(i);
-      }
-    }
-
-    public int out() {
-      return q.poll();
-    }
-
-    public boolean isThereBox() {
-      return !q.isEmpty();
-    }
-
-    public int currentBox() {
-      return q.peek();
-    }
-
-
-  }
-
-  class SupplementBelt {
-
-    private Stack<Integer> stk;
-
-    public SupplementBelt() {
-      init();
-    }
-
-    private void init() {
-      stk = new Stack<>();
-
-    }
-
-    public boolean isThereBox() {
-      return !stk.isEmpty();
-    }
-
-    public void input(int box) {
-      if (stk == null) {
-        init();
-      }
-      stk.add(box);
-    }
-
-    public int out() {
-      return stk.pop();
-    }
-
-    public int getRecentBox() {
-      return stk.peek();
-    }
-
-  }
-
-    
 }
