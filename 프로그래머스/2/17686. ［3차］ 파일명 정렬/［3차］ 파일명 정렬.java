@@ -1,90 +1,58 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
+import java.util.*;
+import java.util.stream.*;
 class Solution {
- 
-  public String[] solution(String[] files) {
-
-    List<File> filesList = FileConvertor.convertToFileList(files);
-    return filesList.stream().sorted().map(FileConvertor::convertToString).toArray(String[]::new);
-  }
-
-  static class FileConvertor {
-
-    private static List<File> convertToFileList(String[] files) {
-      List<File> filesList = new ArrayList<>();
-      for (String file : files) {
-        filesList.add(convertToFile(file));
-      }
-      return filesList;
-    }
-
-    private static File convertToFile(String file) {
-      String head = "";
-      String num = "";
-      String tail = "";
-      for(int i = 0; i < file.length(); i++){
-        char c = file.charAt(i);
-        if(head.equals("") && Character.isDigit(c)){
-          head = file.substring(0,i);
-          while(Character.isDigit(c)){
-            num = num.concat(String.valueOf(c));
-            i++;
-            if(i < file.length()) c = file.charAt(i);
-            else break;
-          }
-          tail = file.substring(i);
-          break;
+    public String[] solution(String[] files) {
+        //files의 파일명을 대소문자를 구분하지 않고 사전 순으로 정렬하고, number부분은 사전 순이 아닌 숫자순으로 정렬한다. 
+        //file은 숫자가 나오기 이전까지가 head 숫자가 시작되는 부분은 number,숫자가 끝나는 부분부터 tail이다.
+        //실수, NullPointException -> String head, number, tail weren't instantiated. So It can't be concated by itself
+        int len = files.length;
+        List<File> list = new ArrayList<>();
+        for(int i = 0; i < len; i++){
+            File f = new File(files[i]);
+            list.add(f);
         }
-         }
-
-      if(num.length() > 5){
-        tail = num.substring(5) + tail;
-        num = num.substring(0,5);
-      }
-
-
-      return new File(head, num, tail);
+        
+        
+        return list.stream().sorted((f1,f2)->{
+            if(f1.head.toUpperCase().equals(f2.head.toUpperCase())){
+                return Integer.compare(Integer.parseInt(f1.number), Integer.parseInt(f2.number));
+            }
+            else{
+                return f1.head.toUpperCase().compareTo(f2.head.toUpperCase());
+            }
+        }).map(f -> f.concat()).toArray(String[]::new);
+        
     }
 
-    private static String convertToString(File file) {
-      return file.toString();
+    class File {
+        String head = "";
+        String number = "";
+        String tail = "";
+
+        public File(String input) {
+            int len = input.length();
+            int i = 0;
+
+            while (i < len && !Character.isDigit(input.charAt(i))) {
+                head += input.charAt(i++);
+            }
+
+            while (i < len && Character.isDigit(input.charAt(i))) {
+                number += input.charAt(i++);
+            }
+
+            if (i < len) {
+                tail = input.substring(i);
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "head: " + this.head + ", number: " + this.number + ", tail: " + this.tail;
+        }
+
+        public String concat() {
+            return this.head + this.number + this.tail;
+        }
     }
-
-  }
-
-}
-
-
-class File implements Comparable<File> {
-
-  private final String header;
-  private final String number;
-  private final String tail;
-
-  public File(String header, String number, String tail) {
-    this.header = header;
-    this.number = number;
-    this.tail = tail;
-  }
-
-  @Override
-  public String toString() {
-    return header + number + tail;
-  }
-
-@Override
-  public int compareTo(File o) {
-    int headerComparisonResult = this.header.toLowerCase(Locale.ROOT)
-        .compareTo(o.header.toLowerCase(Locale.ROOT));
-    int numberComparisonResult = Integer.compare(Integer.parseInt(this.number),
-        Integer.parseInt(o.number));
-    if (headerComparisonResult != 0) {
-      return headerComparisonResult;
-    }
-        return numberComparisonResult;
-
-
-  }
 }
