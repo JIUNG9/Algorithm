@@ -1,80 +1,58 @@
-import java.util.*;
-
 class Solution {
-    private List<Long> cache;
-    private long[] answer;
+    private long[] num;
     public long[] solution(long[] numbers) {
-        int len = numbers.length;
-        int idx = 0;
-        answer = new long[len];
         
-        initCache();
-        for(int i = 0; i < len; i++){
-            long num = numbers[i];
-            String strNum = convertToString(num);
-            String reversed = new StringBuilder(strNum).reverse().toString();
-            
-            for(int j = 0; j < reversed.length(); j++){
-                
-                if(reversed.substring(j, j + 1).equals("0")) {
-                    num+=cache.get(j);
-                    for(int k = j-1; k >= 0; k--){
-                        if(reversed.substring(k,k+1).equals("1")){
-                            num-=cache.get(k);
-                            break;
-
-                        }
-                    }
-                    break;
-                }
+        long[] answer = new long[numbers.length];
+        int answerIdx = 0;
+        initDecimalArr();
+        for(int i = 0; i < numbers.length; i++){
+            int idx = 0;
+            String criteria = converToDecimal(numbers[i]);
+            while(!isDifferentUnder2(criteria,converToDecimal(numbers[i] + num[idx]))){
+                idx++;
+                //1,2,4를 더해야지 3,7 이렇게 누적합을 구하는 게 아니지
             }
             
-            answer[idx++] = num;
-        
+            answer[answerIdx++] = numbers[i] + num[idx];
         }
-        
-       
-        
         return answer;
-    }
-    
-
-    
-    private void initCache(){
-        cache = new ArrayList<>();
-        cache.add(1L);
-        int idx = 0;
-        while(idx < 47){
-            long recent = cache.get(idx);
-            cache.add(recent * 2L);
-            idx++;
-        }
-    }
- 
-    
-    private String convertToString(long num){
-        StringBuilder sb = new StringBuilder();
-        while(num > 0){
-            sb.append(String.valueOf(num%2));
-            num/=2;
-        }
-        sb.append("0");
-        return sb.reverse().toString();
         
     }
-    private long covnertToLong(String num){
-        long result = 0L;
-        StringBuilder sb = new StringBuilder(num);
-        num = sb.reverse().toString();
-        for(int i = 0 ;i < num.length(); i++){
-            if(num.substring(i, i+1).equals("1")){
-                result+=cache.get(i);
-            }
+    public String converToDecimal(long number){
+        StringBuilder sb = new StringBuilder();
+        while(number > 0){
+            sb.append(String.valueOf(number%2));
+            number/=2;
         }
-                    return result;
+        return sb.reverse().toString();
+    }
+    public boolean isDifferentUnder2(String a ,String b){
+        int counter = 0;
 
+        while(a.length() < b.length()){
+            a = "0" + a;
+        }
+        
+        for(int i = a.length() -1 ; i >= 0; i--){
+            if(a.charAt(i) != b.charAt(i)) counter++;
+            if(counter > 2) return false;
+        }
+        
+        
+        return true;
+        
     }
     
     
+    public void initDecimalArr(){
+        num = new long[100];
+        num[0] = 1;
+        num[1] = 2;
+        for(int i = 2; i < 100; i++){
+            num[i] = num[i-1] * 2;
+        }
+        
+    
+    }
     
 }
