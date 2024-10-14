@@ -1,47 +1,33 @@
-// class Solution {
-//     private int answer = 0;
-//     public int solution(int n, int[] stations, int w) {
-//       //station이 존재하고 시작 범위(1)부터 기지국이 가지는 범위를 더하여 가장 앞에 위치하는 기지국이 커버하는 범위(stations[idx] - w) 보다  작을 경우 기지국을 설치하지 않고 존재하는 기지국위치에 기지국이 다룰 수 있는 최대 범위(기지국 + w) 이동하여 해당 위치부터 검색한다.
-//     //station이 존재하고, 가장 앞에 존재하는 기지국이 커버할 수 없다면  기지국을 설치하고 현재 위치에서 기지국이 다루는 범위 * 2 + 1 위치로 이동하여 확인한다.(*2까지는 커버가 가능하므로)
-//         //station이 아예 존재하지 않는 경우는 기지국이 좌우로 커버가 가능한 범위만큼 이동하여 해당 위치에서 끝까지 전부 기지국을 설치한다.
-//         int stationIdx = 0;
-        
-//         for(int position = 1; position < n;){
-//             if(stationIdx < stations.length){
-//                  if(position >= stations[stationIdx] - w -1){
-//                     position=stations[stationIdx] + w + 1;
-//                     stationIdx++;
-//                 }       
-//                  else{
-//                     answer++;
-//                     position+= (w + 1);
-//                 }
-//             }
-//             else{
-//                 answer++;
-//                 position+=2*w+1;
-//             }        
-//     }
-//                     return answer;
-
-// }
-// }
 class Solution {
     public int solution(int n, int[] stations, int w) {
+    //마지막에 세운 기지국이 모든 아파트들을 커버할 수 있을 때까지, 기지국을 세운다. 현재 위치를 먼저 세워놓은 기지국이 전파 거리가 닿아 커버가 가능하다면 현재 위치에 세우지 않고, 먼저 세워놓은 기지국이 전파 거리가 닿지 않은 거리까지 이동하고, 이후 반복적으로 먼저 세워 놓은 기지국이 존재한다면 확인하면서 이동한다. 만약 기지국이 더 이상 존재하지 않는다면 지속적으로 기지국을 세우면서 이동한다. 이때 기지국을 추가적으로 세운 개수를 반환하라.
+        int idx = 1;
         int answer = 0;
         int stationIdx = 0;
-        int position = 1;
-        
-        while (position <= n) {
-            if (stationIdx < stations.length && position >= stations[stationIdx] - w) {
-                position = stations[stationIdx] + w + 1;
-                stationIdx++;
-            } else {
-                answer++;
-                position += (2 * w) + 1;
+        int stationLen = stations.length;
+        while(idx <= n){
+            if(stationIdx < stationLen){
+                //커버가 가능하다면 다음 기지국을 확인하는 걸로 수정하고, 위치를 기지국이 커버 가능한 다음 위치까지
+                if(stations[stationIdx] - w <= idx ){
+                     idx = (stations[stationIdx] + w + 1);
+                    stationIdx++;
+                }
+                else{
+                    idx+=(2*w+1);
+                    answer++;
+                }
             }
+            else{
+                 idx+=(2*w+1);
+                 answer++;
+            }
+            // System.out.println("idx: "+ idx);
+            // System.out.println("answer: "+ answer);
+            
         }
         
         return answer;
+
+
     }
 }
