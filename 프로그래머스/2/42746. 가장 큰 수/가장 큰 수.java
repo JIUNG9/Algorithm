@@ -1,41 +1,21 @@
-import java.util.stream.*;
 import java.util.*;
-
-
 class Solution {
     public String solution(int[] numbers) {
+        //만약 맨 앞의 자리 숫자가 같다면 전체 숫자를 a,b가 있다고 가정할 때 a에 concated한 수와 b에 concated한 수를 비교하여 더 큰 수가 앞에 오도록 한다. 만약 숫자가 다르다면 더 큰 수가 앞에 오도록한다.
+        //구현, sort는 reference가 필요하므로 reference타입으로 수정
         StringBuilder sb = new StringBuilder();
-        List<Integer> answerList = Arrays.stream(numbers).boxed().sorted((i1,i2)->{
-            String i1FirstLetter = String.valueOf(i1).substring(0,1);
-            String i2FirstLetter = String.valueOf(i2).substring(0,1);
-            
-            int result = i2FirstLetter.compareTo(i1FirstLetter);
-            
-            if(result == 0){
-                String str1 = String.valueOf(i1);
-                String str2= String.valueOf(i2);
-                String str1WithStr2 = str1 +str2;
-                String str2WithStr1= str2 + str1;
-                
-                return str2WithStr1.compareTo(str1WithStr2);
-            
+        Integer[] num = Arrays.stream(numbers).boxed().toArray(Integer[]::new);
+        Arrays.sort(num,(a,b) -> {
+           String str1 = String.valueOf(a);
+           String str2 = String.valueOf(b);
+            if(str1.charAt(0) != str2.charAt(0)) return str2.compareTo(str1);
+            else{
+                return Integer.compare(Integer.parseInt(str2+str1),Integer.parseInt(str1+str2));
             }
-            else return result;
-            
-        }).collect(Collectors.toList());
-        
-        
-        
-        
-        
-        
-        
-        for(Integer i: answerList){
-            sb.append(String.valueOf(i));
+        });
+        for(int i = 0; i < num.length; i++){
+            sb.append(String.valueOf(num[i]));
         }
-        
-        String answer = sb.toString();
-        
-        return sb.substring(0,1).equals("0") ? "0": answer;
+        return sb.toString().charAt(0) == '0' ? "0" : sb.toString();
     }
 }
