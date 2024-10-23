@@ -1,53 +1,31 @@
 import java.util.*;
-import java.util.stream.*;
 
 class Solution {
     public int solution(int n, int k, int[] enemy) {
-        //최적의 해 -> 가장 적합할 때 무적권을 사용해야한다. 그럼 언제?
-        //병사를 다 써버린 이후에 무적권을 사용하는 것은 최적의 해를 보장하지 않는다.
-        //평균을 구해서 무적권을 사용하는 것도 보장할 수 없다.
-        //즉 병사를 사용하다 더 이상 막아낼 수 없을 때 이전에 처리했던 가장 큰 인원수의 병력을 무적권을 사용하여 처리하는 것이 가장 최적의 해를 보장한다.
-        //구현 방법: PQ를 사용한다.
+        //적이 오는 순서에 따라서 무적권을 적절히 사용하여, 최대로 많은 적을 처리하여라
+        //더 이상 내가 가진 병사의 개수로 상대를 쓰러뜨릴 수 없을 때는 무적권을 사용해야한다.
+        //적이 올 때 우선, 내가 쓰러뜨릴 수 있을 때까지 병사를 사용하다, 이후에 더 이상 병사를 사용할 수 없는 경우, 이전에 가장 많이 사용하였던 병사의 개수와 현재 처리해야하는 병사의 개수를 비교하여 더 큰 수에 무적권을 사용하고, 그 개수 만큼 병사를 되살린다, 이때 K가 없다면 지금까지 싸웠던 round를 반환한다.
+        
+        int round = 0;
         int len = enemy.length;
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
         int i = 0;
-        
-        PriorityQueue<Integer> q = new PriorityQueue<>(Collections.reverseOrder());
-        
         while(i < len){
-            //더 이상 진행할 수 없을 경우
-            if(k <=0 && n - enemy[i] < 0) break;
-            //막아낼 수 있을 때까지 병사 사용
-            while(i < len && n - enemy[i] >= 0){
+            
                 n-=enemy[i];
-                q.add(enemy[i]);
-                i++;
-            }
-            //현재는 막을 수 없는 상태 따라서 무적권이 존재한다면 
-            if(i < len && k > 0){
-                //이전에 처리했던 가장 큰 값을 무적권을 사용하여 현재 적을 처리할 수 있게 함
-                if(q.size() > 0){
-                    //edge case -> 현재 처리할 것이 큐에 있는 것 보다 크다면 현재 값을 처리한다.
-                    if(enemy[i] > q.peek()){
-                        i++;
-                    }
-                    else{
-                        n+=q.poll();     
-                    }
-                    
+                pq.add(enemy[i]);
+            
+            if(n < 0){
+                if(k > 0){
                     k--;
+                    n+=pq.poll();
                 }
-                //만약 이전에 처리했던 것이 없다면 무적권을 사용해서 현재 다가오는 병력을 막고 다음 것을 처리할 준비
                 else{
-                    k--;
-                    i++;
+                    return i;
                 }
-                
             }
-            
+            i++;
         }
-            
-            return i;
-        }
-        
-        
+       return i;
+    }
 }
