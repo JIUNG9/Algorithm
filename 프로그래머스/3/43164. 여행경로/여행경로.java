@@ -1,70 +1,42 @@
-// import java.util.*;
-// class Solution {
-//     private String answer ="";
-//     private List<String> list = new ArrayList<>();
-//     private boolean[] visited;
-//     public String[] solution(String[][] tickets) {
-//         //만일 가능한 경로가 2개 이상일 경우 알파벳 순서가 앞서는 경로를 return 합니다.
-//         //출발지가 같은 여행지들은 알파벳 순서로 정렬하여, 해당 여행지를 먼저 갈 수 있도록한다.
-//         //티켓을 한 번씩만 사용하여, 모든 곳을 방문하고, 해당 루트를 반환한다.(루트를 저장? -> String append하자," "로 띄우고)
-//         //우선, 정렬 출발지로 정렬하고 이후, 출발지가 같다면 알파벳 오름차순 순서로 정렬, ICN로 스타트하여, 해당 출발지와 같은 것을 앞에서부터 찾는다, 그리고 찾으면 해당 문자열을 heap에 있는 문자열에 저장한다. 이를 모든 티켓을 다 방문할 때까지 한다. 그리고 나서 해당 문자열을 " "로 쪼개어 문자열을 만들어 반환하자
-        
-//         visited = new boolean[tickets.length];
-//         Arrays.sort(tickets,(str1,str2)->{
-//             if(str1[0].equals(str2[0])) return str1[1].compareTo(str2[1]);
-//             return str1[0].compareTo(str2[0]);
-//         });
-        
-//         dfs(tickets,"ICN");
-//         for(int i = 0; i < list.size(); i++){
-//             System.out.println("element: "+ list.get(i));
-//         }
-//         return answer.split(" ");
-        
-//     }
-    
-//     public void dfs(String[][] t, String target){
-//    //정답 문자열에 해당 target을 붙여주고, 지속적으로 재귀가 실행될 때 해당 heap에 저장
-//         answer= answer.concat(target);
-//         for(int i = 0; i < t.length; i++){
-//             //출발지가 타겟과 같다면 해당 지점을 방문, 또한 해당 티켓을 방문하지 않았어야함
-//             //이렇게 되는 경우 ICN, AAA를 pop한 뒤 BBB가 오게 된다. 모든 도시를 방문하는 케이스만 추가하여, 해당 케이스만을 정답으로 반환.
-//             if(t[i][0].equals(target)){        
-//                 answer+=" ";
-//                 dfs(t, t[i][1]);
-//             }
-//         }
-        
-//         list.add(answer);
-//     }
-// }
-
-
-
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
+import java.util.stream.*;
 class Solution {
-    static boolean[] visit;
-    static ArrayList<String> list=new ArrayList<>();
+    private String answer ="";
+    private boolean[] visited;
     public String[] solution(String[][] tickets) {
-        visit = new boolean[tickets.length];
-        DFS(0, "ICN", "ICN", tickets);
-        Collections.sort(list);
-        String[] temp = list.get(0).split(" ");
-        return temp;
+        //ICN 출발
+        //10000개 이하
+        //주어진 항공권 모두 사용
+        //출발지가 같은 경우 앞에있는 경로
+        //모든 도시를 방문해야한다.
+      
+        //모든 도시를 방문했을 때, 출발지가 같다면 도착지가 알파벳으로 오름차순된 것의 순서부터 도착지로 설정하여, 출발지부터 이후에 도착한 것들의 도시를 붙여 정답을 반환한다.
+        //한 번 방문한 티켓은 더 이상 사용하지 못 하고, 모든 케이스를 확인하여 모든 도시를 방문했을 때, 해당 케이스를 정답으로 반환한다. 
+        //구현 방법: DFS를 활용하여,해당 String에 문자열을 concat하여, 해당 문자열을 반환하려는 생각이었으나, 그렇게 된다면 최정적으로 반환하는 것이 정답이됨, 따라서 이를 해결하기 위해서는 문자열을 출발지가 같다면 오름차순이아닌 내림차순으로 정렬했을 때, 해당 값이 정답이 된다.
+        // 해당 문제는 DFS이고 조합을 사용해야하므로 visited와 for loop를 활용한다. 
+        // 그리고 진행 시, stack에 들어갈 것은 스택에 따라서 변화하는 문자열 또한 포함한다.
+        Arrays.sort(tickets,(str1,str2)->{
+            if(str1[0].equals(str2[0]))  return str2[1].compareTo(str1[1]);
+            return str1[0].compareTo(str2[0]);
+        });
+        
+        
+        int len = tickets.length;
+        visited = new boolean[len];
+        dfs(0,"ICN","ICN",tickets);
+        return answer.split(" ");
     }
-
-    private static void DFS(int cnt, String icn, String word, String[][] tickets) {
-        if (cnt == tickets.length) {
-
-            list.add(word);
-
-        }else{
-            for (int i = 0; i < tickets.length; i++) {
-                if (!visit[i] && tickets[i][0].equals(icn)) {
-                    visit[i]=true;
-                    DFS(cnt+1,tickets[i][1],word+" "+tickets[i][1],tickets);
-                    visit[i]=false;
+    
+    public void dfs(int depth, String curr, String dest, String[][] t){
+        if(depth == t.length){
+            answer = curr;
+        }
+        else{
+            for(int i = 0; i < t.length; i++){
+                if(!visited[i] && t[i][0].equals(dest)){
+                    visited[i] = true;
+                    dfs(depth+1, curr + " " + t[i][1], t[i][1], t);
+                    visited[i] = false;
                 }
             }
         }
