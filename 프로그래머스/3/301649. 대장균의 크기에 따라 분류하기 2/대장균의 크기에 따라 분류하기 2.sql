@@ -1,15 +1,21 @@
+-- 코드를 작성해주세요
 
-with get_partition as(
-    select id, ntile(4) over(order by size_of_colony desc) as part
+with get_rnk as (
+    select id, rank() over(order by size_of_colony desc) as rnk
     from ecoli_data
 )
 
-select p.id, 
+# select id, rnk
+# from get_rnk
+
+select get_rnk.id, 
 case
-when part = 1 then 'CRITICAL'
-when part = 2 then 'HIGH'
-when part = 3 then 'MEDIUM'
-when part = 4 then 'LOW'
+when rnk <= (count(e.id)/ 4) then 'CRITICAL'
+when rnk <= (count(e.id)/ 2) then 'HIGH'
+when rnk <= (count(e.id)/ 4 * 3) then 'MEDIUM'
+else 'LOW'
 end as colony_name
-from get_partition p inner join ecoli_data e on e.id = p.id
+from get_rnk, ecoli_data e
+group by get_rnk.id
 order by 1 asc
+
